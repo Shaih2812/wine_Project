@@ -9,7 +9,7 @@ import java.util.*;
                     try (Connection connection = DriverManager.getConnection(
                             "jdbc:mysql://127.0.0.1:3306/wine_project",
                             "root",
-                            "Sha!250147"
+                            "Sod123456"
                     )) {
                         QueryBuilder queryBuilder = new QueryBuilder();
                         QueryExecutor queryExecutor = new QueryExecutor(connection);

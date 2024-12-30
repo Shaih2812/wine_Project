@@ -125,13 +125,13 @@ public class FilterOptions {
         String query;
         switch (choice) {
             case 1:
-                query = "SELECT COUNT(*) AS wine_count FROM wine_updated WHERE color = 'Red'";
+                query = "SELECT COUNT(*) AS wine_count FROM wine WHERE color = 'Red'";
                 break;
             case 2:
-                query = "SELECT COUNT(*) AS wine_count FROM wine_updated WHERE color = 'White'";
+                query = "SELECT COUNT(*) AS wine_count FROM wine WHERE color = 'White'";
                 break;
             case 3:
-                query = "SELECT COUNT(*) AS wine_count FROM wine_updated";
+                query = "SELECT COUNT(*) AS wine_count FROM wine";
                 break;
             default:
                 System.out.println("Invalid choice.");

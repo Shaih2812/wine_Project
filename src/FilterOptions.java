@@ -1,3 +1,5 @@
+import org.w3c.dom.ls.LSOutput;
+
 import java.util.Scanner;
 
 public class FilterOptions {
@@ -137,4 +139,5 @@ public class FilterOptions {
         }
         queryExecutor.executeCountQuery(query, "Number of Wines");
     }
+
 }

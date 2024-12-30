@@ -16,6 +16,7 @@ public class FilterOptions {
             System.out.println("Filtering Options:");
             System.out.println("1. Color");
             System.out.println("2. Alcohol levels");
+            System.out.println("2. Alcohol levels");
             System.out.println("3. Quality (rating)");
             System.out.println("4. pH");
             System.out.println("5. Execute query");

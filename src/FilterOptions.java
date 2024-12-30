@@ -81,8 +81,6 @@ public class FilterOptions {
 
     private void applyQualityFilter() {
         System.out.println("Quality options:");
-        System.out.println("Hello");
-        System.out.println("New Line Added");
         System.out.println("1. Extremly dissatisfied");
         System.out.println("2. Moderately dissatisfied");
         System.out.println("3. Slightly dissatisfied");

@@ -17,7 +17,7 @@ import java.util.*;
 
                         while (true) {
                             System.out.println("Available filtering options:");
-                            System.out.println("Shay is gay");
+                            System.out.println("Shay is gay121");
                             System.out.println("1. Show all wines");
                             System.out.println("2. Show filtering options");
                             System.out.println("3. Show number of wines");

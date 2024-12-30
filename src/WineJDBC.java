@@ -21,6 +21,7 @@ import java.util.*;
                             System.out.println("2. Show filtering options");
                             System.out.println("3. Show number of wines");
                             System.out.println("4. Exit");
+                            System.out.println("G's");
 
                             int choice = InputHandler.getIntInput(scanner, "Enter your choice: ");
 

@@ -21,13 +21,13 @@ public class QualityFilter {
 
         int qualityChoice = InputHandler.getIntInput(scanner, "Enter your choice: ");
         String quality = switch (qualityChoice) {
-            case 1 -> "extremely dissatisfied";
+            case 1 -> "extremly dissatisfied";
             case 2 -> "moderately dissatisfied";
             case 3 -> "slightly dissatisfied";
             case 4 -> "neutral";
             case 5 -> "slightly satisfied";
             case 6 -> "moderately satisfied";
-            case 7 -> "extremely satisfied";
+            case 7 -> "extremly satisfied";
             default -> {
                 System.out.println("Invalid choice.");
                 yield "";

@@ -56,7 +56,15 @@ public class FilterOptions {
     }
 
     private void filterByQuality() {
-        System.out.println("Enter quality to filter by (e.g., High, Medium, Low): ");
+        System.out.println("Quality options:");
+        System.out.println("1. Extremely dissatisfied");
+        System.out.println("2. Moderately dissatisfied");
+        System.out.println("3. Slightly dissatisfied");
+        System.out.println("4. Neutral");
+        System.out.println("5. Slightly satisfied");
+        System.out.println("6. Moderately satisfied");
+        System.out.println("7. Extremely satisfied");
+        System.out.println("Enter quality to filter by number: ");
         String quality = scanner.next();
         queryBuilder.addCondition("quality = '" + quality + "'");
     }

@@ -1,51 +1,47 @@
-import org.w3c.dom.ls.LSOutput;
-
 import java.util.Scanner;
 
 public class FilterOptions {
     private final Scanner scanner;
     private final QueryBuilder queryBuilder;
     private final QueryExecutor queryExecutor;
+    private final NumberOfWines numberOfWines;
 
     public FilterOptions(Scanner scanner, QueryBuilder queryBuilder, QueryExecutor queryExecutor) {
         this.scanner = scanner;
         this.queryBuilder = queryBuilder;
         this.queryExecutor = queryExecutor;
+        this.numberOfWines = new NumberOfWines(scanner, queryExecutor);
     }
 
     public void showFilterOptions() {
         while (true) {
-            System.out.println("Filtering Options:");
+            System.out.println("Filter by:");
             System.out.println("1. Color");
-            System.out.println("2. Alcohol levels");
-            System.out.println("3. Quality (rating)");
-            System.out.println("4. pH");
-            System.out.println("5. Execute query");
-            System.out.println("6. Reset filters");
-            System.out.println("7. Exit to Main Menu");
+            System.out.println("2. Quality");
+            System.out.println("3. Alcohol Content");
+            System.out.println("4. Apply Filters");
+            System.out.println("5. Reset Filters");
+            System.out.println("6. Back to Main Menu");
 
-            int choice = InputHandler.getIntInput(scanner, "Enter your filter choice: ");
+            int choice = InputHandler.getIntInput(scanner, "Enter your choice: ");
+
             switch (choice) {
                 case 1:
-                    applyColorFilter();
+                    filterByColor();
                     break;
                 case 2:
-                    applyAlcoholFilter();
+                    filterByQuality();
                     break;
                 case 3:
-                    applyQualityFilter();
+                    filterByAlcoholContent();
                     break;
                 case 4:
-                    applyPHFilter();
-                    break;
-                case 5:
-                    queryExecutor.executeQuery(queryBuilder.getQuery());
+                    applyFilters();
                     return;
-                case 6:
-                    queryBuilder.resetQuery();
-                    System.out.println("Filters reset.");
+                case 5:
+                    resetFilters();
                     break;
-                case 7:
+                case 6:
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -53,91 +49,35 @@ public class FilterOptions {
         }
     }
 
-    private void applyColorFilter() {
-        System.out.println("Choose color:");
-        System.out.println("1. Red");
-        System.out.println("2. White");
-        int colorChoice = InputHandler.getIntInput(scanner, "Enter your choice: ");
-        String color = (colorChoice == 1) ? "Red" : "White";
+    private void filterByColor() {
+        System.out.println("Enter color to filter by (e.g., Red, White): ");
+        String color = scanner.next();
         queryBuilder.addCondition("color = '" + color + "'");
     }
 
-    private void applyAlcoholFilter() {
-        System.out.println("Choose alcohol filter:");
-        System.out.println("1. Equal to (=)");
-        System.out.println("2. Greater than or equal to (>=)");
-        System.out.println("3. Less than or equal to (<=)");
-        int operatorChoice = InputHandler.getIntInput(scanner, "Enter your choice: ");
-        float alcoholValue = InputHandler.getFloatInput(scanner, "Enter alcohol value: ");
-        String operator = switch (operatorChoice) {
-            case 1 -> "=";
-            case 2 -> ">=";
-            case 3 -> "<=";
-            default -> {
-                System.out.println("Invalid choice.");
-                yield "=";
-            }
-        };
-        queryBuilder.addCondition("alcohol " + operator + " " + alcoholValue);
+    private void filterByQuality() {
+        System.out.println("Enter quality to filter by (e.g., High, Medium, Low): ");
+        String quality = scanner.next();
+        queryBuilder.addCondition("quality = '" + quality + "'");
     }
 
-    private void applyQualityFilter() {
-        System.out.println("Quality options:");
-        System.out.println("1. Extremly dissatisfied");
-        System.out.println("2. Moderately dissatisfied");
-        System.out.println("3. Slightly dissatisfied");
-        System.out.println("4. Neutral");
-        System.out.println("5. Slightly satisfied");
-        System.out.println("6. Moderately satisfied");
-        System.out.println("7. Extremly satisfied");
-
-        int qualityChoice = InputHandler.getIntInput(scanner, "Enter your choice: ");
-        String quality = switch (qualityChoice) {
-            case 1 -> "extremely dissatisfied";
-            case 2 -> "moderately dissatisfied";
-            case 3 -> "slightly dissatisfied";
-            case 4 -> "neutral";
-            case 5 -> "slightly satisfied";
-            case 6 -> "moderately satisfied";
-            case 7 -> "extremely satisfied";
-            default -> {
-                System.out.println("Invalid choice.");
-                yield "";
-            }
-        };
-        if (!quality.isEmpty()) {
-            queryBuilder.addCondition("quality = '" + quality + "'");
-        }
+    private void filterByAlcoholContent() {
+        float minAlcohol = InputHandler.getFloatInput(scanner, "Enter minimum alcohol content: ");
+        float maxAlcohol = InputHandler.getFloatInput(scanner, "Enter maximum alcohol content: ");
+        queryBuilder.addCondition("alcohol BETWEEN " + minAlcohol + " AND " + maxAlcohol);
     }
 
-    private void applyPHFilter() {
-        System.out.print("Enter pH condition (e.g., < 6): ");
-        String condition = scanner.next();
-        queryBuilder.addCondition("pH " + condition);
+    private void applyFilters() {
+        String query = queryBuilder.getQuery();
+        queryExecutor.executeQuery(query);
+    }
+
+    private void resetFilters() {
+        queryBuilder.resetQuery();
+        System.out.println("Filters have been reset.");
     }
 
     public void showNumberOfWines() {
-        System.out.println("Choose color:");
-        System.out.println("1. Red");
-        System.out.println("2. White");
-        System.out.println("3. Both");
-        int choice = InputHandler.getIntInput(scanner, "Enter your choice: ");
-        String query;
-        switch (choice) {
-            case 1:
-                query = "SELECT COUNT(*) AS wine_count FROM wine WHERE color = 'Red'";
-                break;
-            case 2:
-                query = "SELECT COUNT(*) AS wine_count FROM wine WHERE color = 'White'";
-                break;
-            case 3:
-                query = "SELECT COUNT(*) AS wine_count FROM wine";
-                break;
-            default:
-                System.out.println("Invalid choice.");
-                return;
-        }
-        queryExecutor.executeCountQuery(query, "Number of Wines");
+        numberOfWines.show();
     }
-
 }

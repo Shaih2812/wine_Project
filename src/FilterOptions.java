@@ -9,6 +9,7 @@ public class FilterOptions {
 
     public FilterOptions(Scanner scanner, QueryBuilder queryBuilder, QueryExecutor queryExecutor) {
         this.scanner = scanner;
+        //test
         this.queryBuilder = queryBuilder;
         this.queryExecutor = queryExecutor;
         this.numberOfWines = new NumberOfWines(scanner, queryExecutor);

@@ -7,7 +7,7 @@ import java.util.*;
                     Scanner scanner = new Scanner(System.in);
 
                     try (Connection connection = DriverManager.getConnection(
-                            "jdbc:mysql://127.0.0.1:3306/wine_project",
+                            "jdbc:mysql://127.0.0.1:3306/wine_updated",
                             "root",
                             "Sod123456"
                     )) {

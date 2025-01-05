@@ -10,7 +10,7 @@ public class PHFilter {
     }
 
     public void apply() {
-        System.out.print("Enter pH condition (e.g., < 6): ");
+        System.out.print("Enter pH condition (e.g., <6): ");
         String condition = scanner.next();
         queryBuilder.addCondition("pH " + condition);
     }

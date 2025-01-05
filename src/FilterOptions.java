@@ -6,14 +6,21 @@ public class FilterOptions {
     private final QueryExecutor queryExecutor;
     private final NumberOfWines numberOfWines;
     private final QualityFilter qualityFilter;
+    private final PHFilter phFilter;
+    private final FixedAcidityFilter fixedAcidityFilter;
+    private final VolatileAcidityFilter volatileAcidityFilter;  // Add VolatileAcidityFilter
+    private final CitricAcidFilter citricAcidFilter;  // Add CitricAcidFilter
 
     public FilterOptions(Scanner scanner, QueryBuilder queryBuilder, QueryExecutor queryExecutor) {
         this.scanner = scanner;
-        //test
         this.queryBuilder = queryBuilder;
         this.queryExecutor = queryExecutor;
         this.numberOfWines = new NumberOfWines(scanner, queryExecutor);
         this.qualityFilter = new QualityFilter(scanner, queryBuilder);
+        this.phFilter = new PHFilter(scanner, queryBuilder);
+        this.fixedAcidityFilter = new FixedAcidityFilter(scanner, queryBuilder);
+        this.volatileAcidityFilter = new VolatileAcidityFilter(scanner, queryBuilder);  // Initialize VolatileAcidityFilter
+        this.citricAcidFilter = new CitricAcidFilter(scanner, queryBuilder);  // Initialize CitricAcidFilter
     }
 
     public void showFilterOptions() {
@@ -22,9 +29,13 @@ public class FilterOptions {
             System.out.println("1. Color");
             System.out.println("2. Quality");
             System.out.println("3. Alcohol Levels");
-            System.out.println("4. Apply Filters");
-            System.out.println("5. Reset Filters");
-            System.out.println("6. Back to Main Menu");
+            System.out.println("4. pH Level");
+            System.out.println("5. Fixed Acidity");
+            System.out.println("6. Volatile Acidity");  // New option for Volatile Acidity
+            System.out.println("7. Citric Acid");  // New option for Citric Acid
+            System.out.println("8. Apply Filters");
+            System.out.println("9. Reset Filters");
+            System.out.println("10. Back to Main Menu");
 
             int choice = InputHandler.getIntInput(scanner, "Enter your choice: ");
 
@@ -33,19 +44,31 @@ public class FilterOptions {
                     filterByColor();
                     break;
                 case 2:
-                    qualityFilter.apply(); // Delegate to QualityFilter
+                    qualityFilter.apply();  // Apply quality filter
                     break;
                 case 3:
                     filterByAlcoholContent();
                     break;
                 case 4:
-                    applyFilters();
-                    return;
+                    phFilter.apply();  // Apply pH filter
+                    break;
                 case 5:
-                    resetFilters();
+                    fixedAcidityFilter.apply();  // Apply Fixed Acidity filter
                     break;
                 case 6:
+                    volatileAcidityFilter.apply();  // Apply Volatile Acidity filter
+                    break;
+                case 7:
+                    citricAcidFilter.apply();  // Apply Citric Acid filter
+                    break;
+                case 8:
+                    applyFilters();
                     return;
+                case 9:
+                    resetFilters();
+                    break;
+                case 10:
+                    return;  // Go back to the main menu
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
@@ -66,7 +89,14 @@ public class FilterOptions {
 
     private void applyFilters() {
         String query = queryBuilder.getQuery();
-        queryExecutor.executeQuery(query);
+
+        // Check if any conditions have been applied
+        if (query.trim().isEmpty()) {
+            System.out.println("No filters have been applied.");
+        } else {
+            System.out.println("Applying filters with query: " + query);
+            queryExecutor.executeQuery(query);
+        }
     }
 
     private void resetFilters() {

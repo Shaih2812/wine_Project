@@ -8,8 +8,14 @@ public class FilterOptions {
     private final QualityFilter qualityFilter;
     private final PHFilter phFilter;
     private final FixedAcidityFilter fixedAcidityFilter;
-    private final VolatileAcidityFilter volatileAcidityFilter;  // Add VolatileAcidityFilter
-    private final CitricAcidFilter citricAcidFilter;  // Add CitricAcidFilter
+    private final VolatileAcidityFilter volatileAcidityFilter;
+    private final CitricAcidFilter citricAcidFilter;
+    private final ResidualSugarFilter residualSugarFilter;
+    private final FreeSulfurDioxideFilter freeSulfurDioxideFilter;  // Added FreeSulfurDioxideFilter
+    private final TotalSulfurDioxideFilter totalSulfurDioxideFilter;  // Added TotalSulfurDioxideFilter
+    private final DensityFilter densityFilter;  // Added DensityFilter
+    private final SulphatesFilter sulphatesFilter;  // Added SulphatesFilter
+    private final ChloridesFilter chloridesFilter;  // Added ChloridesFilter
 
     public FilterOptions(Scanner scanner, QueryBuilder queryBuilder, QueryExecutor queryExecutor) {
         this.scanner = scanner;
@@ -19,8 +25,14 @@ public class FilterOptions {
         this.qualityFilter = new QualityFilter(scanner, queryBuilder);
         this.phFilter = new PHFilter(scanner, queryBuilder);
         this.fixedAcidityFilter = new FixedAcidityFilter(scanner, queryBuilder);
-        this.volatileAcidityFilter = new VolatileAcidityFilter(scanner, queryBuilder);  // Initialize VolatileAcidityFilter
-        this.citricAcidFilter = new CitricAcidFilter(scanner, queryBuilder);  // Initialize CitricAcidFilter
+        this.volatileAcidityFilter = new VolatileAcidityFilter(scanner, queryBuilder);
+        this.citricAcidFilter = new CitricAcidFilter(scanner, queryBuilder);
+        this.residualSugarFilter = new ResidualSugarFilter(scanner, queryBuilder);
+        this.freeSulfurDioxideFilter = new FreeSulfurDioxideFilter(scanner, queryBuilder);  // Initialize FreeSulfurDioxideFilter
+        this.totalSulfurDioxideFilter = new TotalSulfurDioxideFilter(scanner, queryBuilder);  // Initialize TotalSulfurDioxideFilter
+        this.densityFilter = new DensityFilter(scanner, queryBuilder);  // Initialize DensityFilter
+        this.sulphatesFilter = new SulphatesFilter(scanner, queryBuilder);  // Initialize SulphatesFilter
+        this.chloridesFilter = new ChloridesFilter(scanner, queryBuilder);  // Initialize ChloridesFilter
     }
 
     public void showFilterOptions() {
@@ -31,11 +43,17 @@ public class FilterOptions {
             System.out.println("3. Alcohol Levels");
             System.out.println("4. pH Level");
             System.out.println("5. Fixed Acidity");
-            System.out.println("6. Volatile Acidity");  // New option for Volatile Acidity
-            System.out.println("7. Citric Acid");  // New option for Citric Acid
-            System.out.println("8. Apply Filters");
-            System.out.println("9. Reset Filters");
-            System.out.println("10. Back to Main Menu");
+            System.out.println("6. Volatile Acidity");
+            System.out.println("7. Residual Sugar");
+            System.out.println("8. Citric Acid");
+            System.out.println("9. Free Sulfur Dioxide");  // New option for Free Sulfur Dioxide
+            System.out.println("10. Total Sulfur Dioxide");  // New option for Total Sulfur Dioxide
+            System.out.println("11. Density");  // New option for Density
+            System.out.println("12. Sulphates");  // New option for Sulphates
+            System.out.println("13. Chlorides");  // New option for Chlorides
+            System.out.println("14. Apply Filters");
+            System.out.println("15. Reset Filters");
+            System.out.println("16. Back to Main Menu");
 
             int choice = InputHandler.getIntInput(scanner, "Enter your choice: ");
 
@@ -59,15 +77,33 @@ public class FilterOptions {
                     volatileAcidityFilter.apply();  // Apply Volatile Acidity filter
                     break;
                 case 7:
-                    citricAcidFilter.apply();  // Apply Citric Acid filter
+                    residualSugarFilter.apply();  // Apply Residual Sugar filter
                     break;
                 case 8:
-                    applyFilters();
-                    return;
+                    citricAcidFilter.apply();  // Apply Citric Acid filter
+                    break;
                 case 9:
-                    resetFilters();
+                    freeSulfurDioxideFilter.apply();  // Apply Free Sulfur Dioxide filter
                     break;
                 case 10:
+                    totalSulfurDioxideFilter.apply();  // Apply Total Sulfur Dioxide filter
+                    break;
+                case 11:
+                    densityFilter.apply();  // Apply Density filter
+                    break;
+                case 12:
+                    sulphatesFilter.apply();  // Apply Sulphates filter
+                    break;
+                case 13:
+                    chloridesFilter.apply();  // Apply Chlorides filter
+                    break;
+                case 14:
+                    applyFilters();
+                    return;
+                case 15:
+                    resetFilters();
+                    break;
+                case 16:
                     return;  // Go back to the main menu
                 default:
                     System.out.println("Invalid choice. Please try again.");

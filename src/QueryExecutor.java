@@ -16,7 +16,18 @@ public class QueryExecutor {
                 System.out.println("Wine number: " + resultSet.getInt("wine number"));
                 System.out.println("Color: " + resultSet.getString("color"));
                 System.out.println("Quality: " + resultSet.getString("quality"));
-                System.out.println("Alcohol: " + resultSet.getFloat("alcohol"));
+                System.out.println("Alcohol levels: " + resultSet.getFloat("alcohol"));
+                System.out.println("PH levels: " + resultSet.getInt("pH"));
+                System.out.println("Fixed acidity: " + resultSet.getString("fixed acidity"));
+                System.out.println("Volatile acidity: " + resultSet.getString("volatile acidity"));
+                System.out.println("Citric acid: " + resultSet.getFloat("citric acid"));
+                System.out.println("Residual sugar: " + resultSet.getInt("residual sugar"));
+                System.out.println("Chlorides: " + resultSet.getString("chlorides"));
+                System.out.println("Free sulfur dioxide: " + resultSet.getFloat("free sulfur dioxide"));
+                System.out.println("Total sulfur dioxide: " + resultSet.getInt("total sulfur dioxide"));
+                System.out.println("Density: " + resultSet.getString("density"));
+                System.out.println("Sulphates: " + resultSet.getString("sulphates"));
+
                 System.out.println();
             }
         } catch (SQLException e) {

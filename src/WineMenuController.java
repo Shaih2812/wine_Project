@@ -1,7 +1,10 @@
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
-
+import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import java.io.IOException;
 import java.sql.Connection;
 
 public class WineMenuController {
@@ -41,8 +44,8 @@ public class WineMenuController {
     private void initialize() {
         // Set button actions
         showAllWinesButton.setOnAction(event -> showAllWines());
-        showFiltersButton.setOnAction(event -> showFilteringOptions());
-        showCountButton.setOnAction(event -> showNumberOfWines());
+        showFiltersButton.setOnAction(event -> openWineFilterWindow());
+        showCountButton.setOnAction(event -> openWineCountWindow());
         exitButton.setOnAction(event -> exitApplication());
     }
 
@@ -59,8 +62,38 @@ public class WineMenuController {
         // Add logic to display filtering options
     }
 
-    private void showNumberOfWines() {
-        // Add logic to show the number of wines
+    private void openWineCountWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("WineCountMenu.fxml"));
+            Scene scene = new Scene(loader.load());
+
+            WineCountMenuController controller = loader.getController();
+            controller.setConnection(connection);  // Pass the connection to the new controller
+
+            Stage stage = new Stage();
+            stage.setTitle("Wine Count Options");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openWineFilterWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("WineFilterMenu.fxml"));
+            Scene scene = new Scene(loader.load());
+
+            WineFilterMenuController controller = loader.getController();
+            controller.setConnection(connection);  // Pass the connection to the new controller
+
+            Stage stage = new Stage();
+            stage.setTitle("Wine Filter Options");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void exitApplication() {

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.stage.Stage?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="WineFilterMenuController" spacing="10" alignment="CENTER" style="-fx-padding: 20;">
+    <!-- Filter buttons -->
+    <Button text="Filter by Color" fx:id="colorFilterButton"/>
+    <Button text="Filter by Quality" fx:id="qualityFilterButton"/>
+    <Button text="Filter by Alcohol Levels" fx:id="alcoholLevelFilterButton"/>
+    <Button text="Filter by pH Level" fx:id="phLevelFilterButton"/>
+    <Button text="Filter by Fixed Acidity" fx:id="fixedAcidityFilterButton"/>
+    <Button text="Filter by Volatile Acidity" fx:id="volatileAcidityFilterButton"/>
+    <Button text="Filter by Residual Sugar" fx:id="residualSugarFilterButton"/>
+    <Button text="Filter by Citric Acid" fx:id="citricAcidFilterButton"/>
+    <Button text="Filter by Free Sulfur Dioxide" fx:id="freeSulfurDioxideFilterButton"/>
+    <Button text="Filter by Total Sulfur Dioxide" fx:id="totalSulfurDioxideFilterButton"/>
+    <Button text="Filter by Density" fx:id="densityFilterButton"/>
+    <Button text="Filter by Sulphates" fx:id="sulphatesFilterButton"/>
+    <Button text="Filter by Chlorides" fx:id="chloridesFilterButton"/>
+
+    <!-- Apply Filters Button -->
+    <Button text="Apply Filters" fx:id="applyFiltersButton"/>
+
+    <!-- Reset Filters Button -->
+    <Button text="Reset Filters" fx:id="resetFiltersButton"/>
+
+    <!-- Back to Main Menu Button -->
+    <Button text="Back to Main Menu" fx:id="backToMainMenuButton"/>
+</VBox>

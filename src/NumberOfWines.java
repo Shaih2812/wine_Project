@@ -33,3 +33,4 @@ public class NumberOfWines {
         queryExecutor.executeCountQuery(query, "Number of Wines");
     }
 }
+

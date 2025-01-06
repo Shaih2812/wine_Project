@@ -1,4 +1,6 @@
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class QueryExecutor {
     private final Connection connection;
@@ -7,33 +9,35 @@ public class QueryExecutor {
         this.connection = connection;
     }
 
-    public void executeQuery(String query) {
-        System.out.println("Executing query: " + query);
+    public List<Wine> executeQuery(String query) {
+        List<Wine> wines = new ArrayList<>();
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
-                System.out.println("Wine number: " + resultSet.getInt("wine number"));
-                System.out.println("Color: " + resultSet.getString("color"));
-                System.out.println("Quality: " + resultSet.getString("quality"));
-                System.out.println("Alcohol levels: " + resultSet.getFloat("alcohol"));
-                System.out.println("PH levels: " + resultSet.getInt("pH"));
-                System.out.println("Fixed acidity: " + resultSet.getString("fixed acidity"));
-                System.out.println("Volatile acidity: " + resultSet.getString("volatile acidity"));
-                System.out.println("Citric acid: " + resultSet.getFloat("citric acid"));
-                System.out.println("Residual sugar: " + resultSet.getInt("residual sugar"));
-                System.out.println("Chlorides: " + resultSet.getString("chlorides"));
-                System.out.println("Free sulfur dioxide: " + resultSet.getFloat("free sulfur dioxide"));
-                System.out.println("Total sulfur dioxide: " + resultSet.getInt("total sulfur dioxide"));
-                System.out.println("Density: " + resultSet.getString("density"));
-                System.out.println("Sulphates: " + resultSet.getString("sulphates"));
-
-                System.out.println();
+                Wine wine = new Wine(
+                        resultSet.getInt("wine number"),
+                        resultSet.getString("color"),
+                        resultSet.getString("quality"),
+                        resultSet.getFloat("alcohol"),
+                        resultSet.getInt("pH"),
+                        resultSet.getString("fixed acidity"),
+                        resultSet.getString("volatile acidity"),
+                        resultSet.getFloat("citric acid"),
+                        resultSet.getInt("residual sugar"),
+                        resultSet.getString("chlorides"),
+                        resultSet.getFloat("free sulfur dioxide"),
+                        resultSet.getInt("total sulfur dioxide"),
+                        resultSet.getString("density"),
+                        resultSet.getString("sulphates")
+                );
+                wines.add(wine);
             }
         } catch (SQLException e) {
             System.out.println("Error executing query: " + e.getMessage());
             e.printStackTrace();
         }
+        return wines;
     }
 
     public void executeCountQuery(String query, String description) {

@@ -1,13 +1,13 @@
-
-            import java.sql.*;
+import java.sql.*;
 import java.util.*;
+//test line to push
 
             public class WineJDBC {
                 public static void main(String[] args) {
                     Scanner scanner = new Scanner(System.in);
 
                     try (Connection connection = DriverManager.getConnection(
-                            "jdbc:mysql://127.0.0.1:3306/wine_updated", //project
+                            "jdbc:mysql://127.0.0.1:3306/wine_project", //project
                             "root",
                             "Sod123456"
                     )) {

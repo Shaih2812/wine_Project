@@ -13,7 +13,7 @@ public class Wine {
     private int totalSulfurDioxide;
     private String density;
     private String sulphates;
-
+    //fuck me
     // Constructor
     public Wine(int wineNumber, String color, String quality, float alcohol, int pH,
                 String fixedAcidity, String volatileAcidity, float citricAcid,

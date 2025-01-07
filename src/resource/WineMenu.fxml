@@ -7,10 +7,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" prefHeight="600.0" prefWidth="400.0" spacing="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="WineMenuController">
-    <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome To SOD Wine Menu" textAlignment="CENTER">
+<VBox alignment="CENTER" prefHeight="600.0" prefWidth="734.0" spacing="10" style="-fx-background-image: url('WineCellar.jpg');
+                -fx-background-size: cover;
+                -fx-background-repeat: no-repeat;
+                -fx-background-position: center;"
+      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WineMenuController">
+    <Text fontSmoothingType="LCD" stroke="WHITE" strokeLineCap="ROUND" strokeType="OUTSIDE" strokeWidth="0.6" text="Welcome To SOD Wine Menu" textAlignment="CENTER" wrappingWidth="413.03125">
         <font>
-            <Font name="Calibri" size="16.0" />
+            <Font name="Calibri" size="33.0" />
         </font>
     </Text>
     <Button fx:id="showAllWinesButton" text="Show All Wines" />
@@ -19,22 +23,22 @@
     <Button fx:id="exitButton" text="Exit" />
 
     <!-- Add TableView for displaying wine data -->
-    <TableView fx:id="resultsTable" prefWidth="380.0" prefHeight="300.0">
+    <TableView fx:id="resultsTable" prefHeight="286.0" prefWidth="519.0">
         <columns>
-            <TableColumn fx:id="wineNumberColumn" text="Wine Number"/>
-            <TableColumn fx:id="colorColumn" text="Color"/>
-            <TableColumn fx:id="qualityColumn" text="Quality"/>
-            <TableColumn fx:id="alcoholColumn" text="Alcohol"/>
-            <TableColumn fx:id="pHColumn" text="pH"/>
-            <TableColumn fx:id="fixedAcidityColumn" text="Fixed Acidity"/>
-            <TableColumn fx:id="volatileAcidityColumn" text="Volatile Acidity"/>
-            <TableColumn fx:id="citricAcidColumn" text="Citric Acid"/>
-            <TableColumn fx:id="residualSugarColumn" text="Residual Sugar"/>
-            <TableColumn fx:id="chloridesColumn" text="Chlorides"/>
-            <TableColumn fx:id="freeSulfurDioxideColumn" text="Free Sulfur Dioxide"/>
-            <TableColumn fx:id="totalSulfurDioxideColumn" text="Total Sulfur Dioxide"/>
-            <TableColumn fx:id="densityColumn" text="Density"/>
-            <TableColumn fx:id="sulphatesColumn" text="Sulphates"/>
+            <TableColumn fx:id="wineNumberColumn" text="Wine Number" />
+            <TableColumn fx:id="colorColumn" text="Color" />
+            <TableColumn fx:id="qualityColumn" text="Quality" />
+            <TableColumn fx:id="alcoholColumn" text="Alcohol" />
+            <TableColumn fx:id="pHColumn" text="pH" />
+            <TableColumn fx:id="fixedAcidityColumn" text="Fixed Acidity" />
+            <TableColumn fx:id="volatileAcidityColumn" text="Volatile Acidity" />
+            <TableColumn fx:id="citricAcidColumn" text="Citric Acid" />
+            <TableColumn fx:id="residualSugarColumn" text="Residual Sugar" />
+            <TableColumn fx:id="chloridesColumn" text="Chlorides" />
+            <TableColumn fx:id="freeSulfurDioxideColumn" text="Free Sulfur Dioxide" />
+            <TableColumn fx:id="totalSulfurDioxideColumn" text="Total Sulfur Dioxide" />
+            <TableColumn fx:id="densityColumn" text="Density" />
+            <TableColumn fx:id="sulphatesColumn" text="Sulphates" />
         </columns>
     </TableView>
 </VBox>

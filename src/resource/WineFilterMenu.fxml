@@ -1,30 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.stage.Stage?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="WineFilterMenuController" spacing="10" alignment="CENTER" style="-fx-padding: 20;">
+<VBox alignment="CENTER" prefHeight="640.0" prefWidth="362.0" spacing="10" style="-fx-background-image: url('KatzrinBottle.jpg');
+            -fx-background-size: auto;
+            -fx-background-repeat: no-repeat;
+            -fx-background-position: center;
+            -fx-padding: 20;"
+      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WineFilterMenuController">
     <!-- Filter buttons -->
-    <Button text="Filter by Color" fx:id="colorFilterButton"/>
-    <Button text="Filter by Quality" fx:id="qualityFilterButton"/>
-    <Button text="Filter by Alcohol Levels" fx:id="alcoholLevelFilterButton"/>
-    <Button text="Filter by pH Level" fx:id="phLevelFilterButton"/>
-    <Button text="Filter by Fixed Acidity" fx:id="fixedAcidityFilterButton"/>
-    <Button text="Filter by Volatile Acidity" fx:id="volatileAcidityFilterButton"/>
-    <Button text="Filter by Residual Sugar" fx:id="residualSugarFilterButton"/>
-    <Button text="Filter by Citric Acid" fx:id="citricAcidFilterButton"/>
-    <Button text="Filter by Free Sulfur Dioxide" fx:id="freeSulfurDioxideFilterButton"/>
-    <Button text="Filter by Total Sulfur Dioxide" fx:id="totalSulfurDioxideFilterButton"/>
-    <Button text="Filter by Density" fx:id="densityFilterButton"/>
-    <Button text="Filter by Sulphates" fx:id="sulphatesFilterButton"/>
-    <Button text="Filter by Chlorides" fx:id="chloridesFilterButton"/>
+    <Button fx:id="colorFilterButton" text="Filter by Color" />
+    <Button fx:id="qualityFilterButton" text="Filter by Quality" />
+    <Button fx:id="alcoholLevelFilterButton" text="Filter by Alcohol Levels" />
+    <Button fx:id="phLevelFilterButton" text="Filter by pH Level" />
+    <Button fx:id="fixedAcidityFilterButton" text="Filter by Fixed Acidity" />
+    <Button fx:id="volatileAcidityFilterButton" text="Filter by Volatile Acidity" />
+    <Button fx:id="residualSugarFilterButton" text="Filter by Residual Sugar" />
+    <Button fx:id="citricAcidFilterButton" text="Filter by Citric Acid" />
+    <Button fx:id="freeSulfurDioxideFilterButton" text="Filter by Free Sulfur Dioxide" />
+    <Button fx:id="totalSulfurDioxideFilterButton" text="Filter by Total Sulfur Dioxide" />
+    <Button fx:id="densityFilterButton" text="Filter by Density" />
+    <Button fx:id="sulphatesFilterButton" text="Filter by Sulphates" />
+    <Button fx:id="chloridesFilterButton" text="Filter by Chlorides" />
 
     <!-- Apply Filters Button -->
-    <Button text="Apply Filters" fx:id="applyFiltersButton"/>
+    <Button fx:id="applyFiltersButton" text="Apply Filters" />
 
     <!-- Reset Filters Button -->
-    <Button text="Reset Filters" fx:id="resetFiltersButton"/>
+    <Button fx:id="resetFiltersButton" text="Reset Filters" />
 
     <!-- Back to Main Menu Button -->
-    <Button text="Back to Main Menu" fx:id="backToMainMenuButton"/>
+    <Button fx:id="backToMainMenuButton" text="Back to Main Menu" />
 </VBox>

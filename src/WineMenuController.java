@@ -1,16 +1,10 @@
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
+import javafx.stage.Stage;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
 import java.util.List;
 
 public class WineMenuController {
@@ -31,38 +25,6 @@ public class WineMenuController {
     @FXML
     private Button exitButton;
 
-    @FXML
-    private TableView<Wine> resultsTable;
-
-    @FXML
-    private TableColumn<Wine, Integer> wineNumberColumn;
-    @FXML
-    private TableColumn<Wine, String> colorColumn;
-    @FXML
-    private TableColumn<Wine, String> qualityColumn;
-    @FXML
-    private TableColumn<Wine, Float> alcoholColumn;
-    @FXML
-    private TableColumn<Wine, Float> pHColumn;
-    @FXML
-    private TableColumn<Wine, Float> fixedAcidityColumn;
-    @FXML
-    private TableColumn<Wine, Float> volatileAcidityColumn;
-    @FXML
-    private TableColumn<Wine, Float> citricAcidColumn;
-    @FXML
-    private TableColumn<Wine, Float> residualSugarColumn;
-    @FXML
-    private TableColumn<Wine, Float> chloridesColumn;
-    @FXML
-    private TableColumn<Wine, Float> freeSulfurDioxideColumn;
-    @FXML
-    private TableColumn<Wine, Float> totalSulfurDioxideColumn;
-    @FXML
-    private TableColumn<Wine, Float> densityColumn;
-    @FXML
-    private TableColumn<Wine, Float> sulphatesColumn;
-
     public void setConnection(Connection connection) {
         this.connection = connection;
     }
@@ -77,25 +39,6 @@ public class WineMenuController {
 
     @FXML
     private void initialize() {
-        // Configure TableView columns
-        wineNumberColumn.setCellValueFactory(new PropertyValueFactory<>("wineNumber"));
-        colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
-        qualityColumn.setCellValueFactory(new PropertyValueFactory<>("quality"));
-        alcoholColumn.setCellValueFactory(new PropertyValueFactory<>("alcohol"));
-        pHColumn.setCellValueFactory(new PropertyValueFactory<>("pH"));
-        fixedAcidityColumn.setCellValueFactory(new PropertyValueFactory<>("fixedAcidity"));
-        volatileAcidityColumn.setCellValueFactory(new PropertyValueFactory<>("volatileAcidity"));
-        citricAcidColumn.setCellValueFactory(new PropertyValueFactory<>("citricAcid"));
-        residualSugarColumn.setCellValueFactory(new PropertyValueFactory<>("residualSugar"));
-        chloridesColumn.setCellValueFactory(new PropertyValueFactory<>("chlorides"));
-        freeSulfurDioxideColumn.setCellValueFactory(new PropertyValueFactory<>("freeSulfurDioxide"));
-        totalSulfurDioxideColumn.setCellValueFactory(new PropertyValueFactory<>("totalSulfurDioxide"));
-        densityColumn.setCellValueFactory(new PropertyValueFactory<>("density"));
-        sulphatesColumn.setCellValueFactory(new PropertyValueFactory<>("sulphates"));
-
-        // Initially hide the TableView
-        resultsTable.setVisible(false);
-
         // Set button actions
         showAllWinesButton.setOnAction(event -> showAllWines());
         showFiltersButton.setOnAction(event -> openWineFilterWindow());
@@ -108,12 +51,24 @@ public class WineMenuController {
             String query = queryBuilder.getBaseQuery();
             List<Wine> wines = queryExecutor.executeQuery(query);
 
-            // Convert List<Wine> to ObservableList and set it to the TableView
-            ObservableList<Wine> wineList = FXCollections.observableArrayList(wines);
-            resultsTable.setItems(wineList);
+            try {
+                // Load WineTable.fxml for displaying wines
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("WineTable.fxml"));
+                Scene scene = new Scene(loader.load());
 
-            // Show the TableView
-            resultsTable.setVisible(true);
+                WineTableController controller = loader.getController();
+                controller.setWines(wines);
+
+                Stage stage = new Stage();
+                stage.setTitle("All Wines");
+                stage.setScene(scene);
+
+                controller.setStage(stage);
+
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             System.out.println("QueryExecutor or QueryBuilder is not set.");
         }

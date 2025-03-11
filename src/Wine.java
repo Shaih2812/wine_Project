@@ -1,5 +1,10 @@
+
+import java.sql.Date;
+import java.time.LocalDate;
+
 public class Wine {
     private int wineNumber;
+    private Date date;
     private String color;
     private String quality;
     private float alcohol;
@@ -13,13 +18,14 @@ public class Wine {
     private int totalSulfurDioxide;
     private String density;
     private String sulphates;
-    //fuck me
+
     // Constructor
-    public Wine(int wineNumber, String color, String quality, float alcohol, int pH,
+    public Wine(int wineNumber, Date date, String color, String quality, float alcohol, int pH,
                 String fixedAcidity, String volatileAcidity, float citricAcid,
                 int residualSugar, String chlorides, float freeSulfurDioxide,
                 int totalSulfurDioxide, String density, String sulphates) {
         this.wineNumber = wineNumber;
+        this.date = date;
         this.color = color;
         this.quality = quality;
         this.alcohol = alcohol;
@@ -43,6 +49,10 @@ public class Wine {
     public void setWineNumber(int wineNumber) {
         this.wineNumber = wineNumber;
     }
+
+    public Date getDate() {return date;}
+
+    public void setdate(Date date) {this.date = date;}
 
     public String getColor() {
         return color;

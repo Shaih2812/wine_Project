@@ -17,6 +17,7 @@ public class QueryExecutor {
             while (resultSet.next()) {
                 Wine wine = new Wine(
                         resultSet.getInt("wine number"),
+                        resultSet.getDate("date"),
                         resultSet.getString("color"),
                         resultSet.getString("quality"),
                         resultSet.getFloat("alcohol"),

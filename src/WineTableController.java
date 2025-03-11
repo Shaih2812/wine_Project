@@ -11,6 +11,7 @@ import java.util.List;
 
 public class WineTableController {
 
+    public TableColumn DateColumn;
     @FXML
     private TableView<Wine> resultsTable;
 
@@ -60,6 +61,7 @@ public class WineTableController {
     @FXML
     private void initialize() {
         wineNumberColumn.setCellValueFactory(new PropertyValueFactory<>("wineNumber"));
+        DateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
         qualityColumn.setCellValueFactory(new PropertyValueFactory<>("quality"));
         alcoholColumn.setCellValueFactory(new PropertyValueFactory<>("alcohol"));

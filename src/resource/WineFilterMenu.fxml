@@ -1,31 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" prefHeight="640.0" prefWidth="362.0" spacing="10" style="-fx-background-image: url('KatzrinBottle.jpg');
-            -fx-background-size: auto;
-            -fx-background-repeat: no-repeat;
-            -fx-background-position: center;
-            -fx-padding: 20;"
-      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WineFilterMenuController">
-    <!-- Filter buttons -->
-    <Button fx:id="colorFilterButton" text="Filter by Color" />
-    <Button fx:id="qualityFilterButton" text="Filter by Quality" />
-    <Button fx:id="alcoholLevelFilterButton" text="Filter by Alcohol Levels" />
-    <Button fx:id="phLevelFilterButton" text="Filter by pH Level" />
-    <Button fx:id="fixedAcidityFilterButton" text="Filter by Fixed Acidity" />
-    <Button fx:id="volatileAcidityFilterButton" text="Filter by Volatile Acidity" />
-    <Button fx:id="residualSugarFilterButton" text="Filter by Residual Sugar" />
-    <Button fx:id="citricAcidFilterButton" text="Filter by Citric Acid" />
-    <Button fx:id="freeSulfurDioxideFilterButton" text="Filter by Free Sulfur Dioxide" />
-    <Button fx:id="totalSulfurDioxideFilterButton" text="Filter by Total Sulfur Dioxide" />
-    <Button fx:id="densityFilterButton" text="Filter by Density" />
-    <Button fx:id="sulphatesFilterButton" text="Filter by Sulphates" />
-    <Button fx:id="chloridesFilterButton" text="Filter by Chlorides" />
+<VBox alignment="CENTER" prefHeight="640.0" prefWidth="362.0" spacing="10" style="-fx-background-image: url('KatzrinBottle.jpg');             -fx-background-size: auto;             -fx-background-repeat: no-repeat;             -fx-background-position: center;             -fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WineFilterMenuController">
+   <Text stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="0.3" text="Choose Wine Color">
+      <font>
+         <Font name="Calibri Italic" size="22.0" />
+      </font></Text>
+   <ChoiceBox fx:id="colorChoiceBox" prefWidth="150.0">
+    <items>
+        <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Red" />
+                <String fx:value="White" />
+                <String fx:value="All" />
+        </FXCollections>
+    </items>
+   </ChoiceBox>
+   <Text stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.3" text="Choose Wine Quality">
+      <font>
+         <Font name="Calibri Italic" size="22.0" />
+      </font></Text>
+    <ChoiceBox fx:id="qualityChoiceBox" prefWidth="150.0">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Extremely dissatisfied" />
+                <String fx:value="Moderately dissatisfied" />
+                <String fx:value="Slightly dissatisfied" />
+                <String fx:value="Neutral" />
+                <String fx:value="Slightly satisfied" />
+                <String fx:value="Moderately satisfied" />
+                <String fx:value="Extremely satisfied" />
+            </FXCollections>
+        </items>
+    </ChoiceBox>
+   <ComboBox fx:id="alcoholFilterChoice" prefWidth="150.0" promptText="Choose Alcohol Levels">
+       <items>
+           <FXCollections fx:factory="observableArrayList">
+               <String fx:value="&gt; 12" />
+               <String fx:value="= 12" />
+               <String fx:value="&lt; 12" />
+           </FXCollections>
+       </items>
+   </ComboBox>
+    <ComboBox fx:id="pHFilterChoice" prefWidth="150.0" promptText="Choose pH Levels">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="&gt; 3" />
+                <String fx:value="&lt; 3" />
+            </FXCollections>
+        </items>
+    </ComboBox>
 
     <!-- Apply Filters Button -->
     <Button fx:id="applyFiltersButton" text="Apply Filters" />
+    <Button fx:id="goButton" onAction="#handleGoButtonAction" text="Go!" />
 
     <!-- Reset Filters Button -->
     <Button fx:id="resetFiltersButton" text="Reset Filters" />

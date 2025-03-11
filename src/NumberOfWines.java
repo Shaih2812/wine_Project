@@ -10,10 +10,6 @@ public class NumberOfWines {
     }
 
     public void show() {
-        System.out.println("Choose color:");
-        System.out.println("1. Red");
-        System.out.println("2. White");
-        System.out.println("3. Both");
         int choice = InputHandler.getIntInput(scanner, "Enter your choice: ");
         String query;
         switch (choice) {

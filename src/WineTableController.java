@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
-public class WineTableController {
+public class    WineTableController {
 
     public TableColumn DateColumn;
     @FXML

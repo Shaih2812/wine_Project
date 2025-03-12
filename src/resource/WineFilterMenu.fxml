@@ -5,28 +5,42 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" prefHeight="640.0" prefWidth="362.0" spacing="10" style="-fx-background-image: url('KatzrinBottle.jpg');             -fx-background-size: auto;             -fx-background-repeat: no-repeat;             -fx-background-position: center;             -fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WineFilterMenuController">
-   <Text stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="0.3" text="Choose Wine Color">
-      <font>
-         <Font name="Calibri Italic" size="22.0" />
-      </font></Text>
-   <ChoiceBox fx:id="colorChoiceBox" prefWidth="150.0">
-    <items>
-        <FXCollections fx:factory="observableArrayList">
+<VBox alignment="CENTER" prefHeight="640.0" prefWidth="362.0" spacing="10" style="-fx-background-image: url('KatzrinBottle.jpg'); -fx-background-size: auto; -fx-background-repeat: no-repeat; -fx-background-position: center; -fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WineFilterMenuController">
+    <Text layoutX="108.0" layoutY="175.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="0.3" text="Choose Dates">
+        <font>
+            <Font name="Calibri Italic" size="22.0" />
+        </font>
+    </Text>
+    <DatePicker fx:id="dateFilterPicker" />
+
+
+    <Text stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="0.3" text="Choose Wine Color">
+        <font>
+            <Font name="Calibri Italic" size="22.0" />
+        </font>
+    </Text>
+
+    <ChoiceBox fx:id="colorChoiceBox" prefWidth="150.0">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
                 <String fx:value="Red" />
                 <String fx:value="White" />
                 <String fx:value="All" />
-        </FXCollections>
-    </items>
-   </ChoiceBox>
-   <Text stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.3" text="Choose Wine Quality">
-      <font>
-         <Font name="Calibri Italic" size="22.0" />
-      </font></Text>
+            </FXCollections>
+        </items>
+    </ChoiceBox>
+
+    <Text stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.3" text="Choose Wine Quality">
+        <font>
+            <Font name="Calibri Italic" size="22.0" />
+        </font>
+    </Text>
+
     <ChoiceBox fx:id="qualityChoiceBox" prefWidth="150.0">
         <items>
             <FXCollections fx:factory="observableArrayList">
@@ -40,15 +54,17 @@
             </FXCollections>
         </items>
     </ChoiceBox>
-   <ComboBox fx:id="alcoholFilterChoice" prefWidth="150.0" promptText="Choose Alcohol Levels">
-       <items>
-           <FXCollections fx:factory="observableArrayList">
-               <String fx:value="&gt; 12" />
-               <String fx:value="= 12" />
-               <String fx:value="&lt; 12" />
-           </FXCollections>
-       </items>
-   </ComboBox>
+
+    <ComboBox fx:id="alcoholFilterChoice" prefWidth="150.0" promptText="Choose Alcohol Levels">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="&gt; 12" />
+                <String fx:value="= 12" />
+                <String fx:value="&lt; 12" />
+            </FXCollections>
+        </items>
+    </ComboBox>
+
     <ComboBox fx:id="pHFilterChoice" prefWidth="150.0" promptText="Choose pH Levels">
         <items>
             <FXCollections fx:factory="observableArrayList">
@@ -58,13 +74,8 @@
         </items>
     </ComboBox>
 
-    <!-- Apply Filters Button -->
     <Button fx:id="applyFiltersButton" text="Apply Filters" />
     <Button fx:id="goButton" onAction="#handleGoButtonAction" text="Go!" />
-
-    <!-- Reset Filters Button -->
     <Button fx:id="resetFiltersButton" text="Reset Filters" />
-
-    <!-- Back to Main Menu Button -->
     <Button fx:id="backToMainMenuButton" text="Back to Main Menu" />
 </VBox>

@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import javafx.application.Platform;
 
 import java.sql.Connection;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -120,7 +121,41 @@ public class ParallelQueryController {
             TableColumn<Wine, Double> alcoholColumn = new TableColumn<>("Alcohol");
             alcoholColumn.setCellValueFactory(new PropertyValueFactory<>("alcohol"));
 
-            resultsTable.getColumns().addAll(wineNumberColumn, colorColumn, alcoholColumn);
+            TableColumn<Wine, LocalDate> dateColumn = new TableColumn<>("Date");
+            dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+
+            TableColumn<Wine, String> qualityColumn = new TableColumn<>("Quality");
+            qualityColumn.setCellValueFactory(new PropertyValueFactory<>("quality"));
+
+            TableColumn<Wine, Float> pHColumn = new TableColumn<>("pH");
+            pHColumn.setCellValueFactory(new PropertyValueFactory<>("pH"));
+
+            TableColumn<Wine, Float> volatileAcidityColumn = new TableColumn<>("Volatile Acidity");
+            volatileAcidityColumn.setCellValueFactory(new PropertyValueFactory<>("volatileAcidity"));
+
+            TableColumn<Wine, String> fixedAcidityColumn = new TableColumn<>("Fixed Acidity");
+            fixedAcidityColumn.setCellValueFactory(new PropertyValueFactory<>("fixedAcidity"));
+
+            TableColumn<Wine, Float> citricAcidColumn = new TableColumn<>("Citric Acid");
+            citricAcidColumn.setCellValueFactory(new PropertyValueFactory<>("citricAcid"));
+
+            TableColumn<Wine, Float> residualSugarColumn = new TableColumn<>("Residual Sugar");
+            residualSugarColumn.setCellValueFactory(new PropertyValueFactory<>("residualSugar"));
+
+            TableColumn<Wine, Float> chloridesColumn = new TableColumn<>("Chlorides");
+            chloridesColumn.setCellValueFactory(new PropertyValueFactory<>("chlorides"));
+
+            TableColumn<Wine, Integer> freesulfurDioxideColumn = new TableColumn<>("Free Sulfur Dioxide");
+            freesulfurDioxideColumn.setCellValueFactory(new PropertyValueFactory<>("freeSulfurDioxide"));
+
+            TableColumn<Wine, Integer> totalsulfurDioxideColumn = new TableColumn<>("Total Sulfur Dioxide");
+            totalsulfurDioxideColumn.setCellValueFactory(new PropertyValueFactory<>("totalSulfurDioxide"));
+            TableColumn<Wine, Float> densityColumn = new TableColumn<>("Density");
+            densityColumn.setCellValueFactory(new PropertyValueFactory<>("density"));
+
+            TableColumn<Wine, Float> sulphatesColumn = new TableColumn<>("Sulphates");
+            sulphatesColumn.setCellValueFactory(new PropertyValueFactory<>("sulphates"));
+            resultsTable.getColumns().addAll(wineNumberColumn, dateColumn, fixedAcidityColumn, volatileAcidityColumn, citricAcidColumn, residualSugarColumn, chloridesColumn, freesulfurDioxideColumn, totalsulfurDioxideColumn, densityColumn, pHColumn, sulphatesColumn, alcoholColumn, qualityColumn, colorColumn);
 
             ObservableList<Wine> wineList = FXCollections.observableArrayList(wines);
             resultsTable.setItems(wineList);

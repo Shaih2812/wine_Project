@@ -26,6 +26,9 @@ public class WineMenuController {
     private Button parallelQueryButton; // New button for parallel queries
 
     @FXML
+    private Button createDatabaseButton;
+
+    @FXML
     private Button exitButton;
 
     public void setConnection(Connection connection) {
@@ -47,7 +50,38 @@ public class WineMenuController {
         showFiltersButton.setOnAction(event -> openWineFilterWindow());
         showCountButton.setOnAction(event -> openWineCountWindow());
         parallelQueryButton.setOnAction(event -> openParallelQueryWindow()); // Handler for new button
+        createDatabaseButton.setOnAction(event -> createNewDatabase());
         exitButton.setOnAction(event -> exitApplication());
+    }
+
+    private void createNewDatabase() {
+        if (connection != null) {
+            DatabaseCreator databaseCreator = new DatabaseCreator(connection);
+            databaseCreator.createTables();
+            System.out.println("Database tables created successfully!");
+
+            // Open the new window to display the tables after creation
+            openTableSelectionWindow();
+        } else {
+            System.out.println("Connection is not set.");
+        }
+    }
+
+    private void openTableSelectionWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("TableSelectionMenu.fxml"));
+            Scene scene = new Scene(loader.load());
+
+            TableSelectionMenuController controller = loader.getController();
+            controller.setConnection(connection);  // Pass connection to the new window
+
+            Stage stage = new Stage();
+            stage.setTitle("Select Table to Display");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showAllWines() {

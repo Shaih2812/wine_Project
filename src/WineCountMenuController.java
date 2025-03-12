@@ -51,7 +51,7 @@ public class WineCountMenuController {
                 break;
             case "White wines":
                 query = "SELECT COUNT(*) AS total_wines FROM wine WHERE color = 'White'";
-                break;
+                break; 
             default:
                 System.out.println("Invalid option.");
                 return;

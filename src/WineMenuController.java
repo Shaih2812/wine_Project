@@ -23,6 +23,9 @@ public class WineMenuController {
     private Button showCountButton;
 
     @FXML
+    private Button parallelQueryButton; // New button for parallel queries
+
+    @FXML
     private Button exitButton;
 
     public void setConnection(Connection connection) {
@@ -43,6 +46,7 @@ public class WineMenuController {
         showAllWinesButton.setOnAction(event -> showAllWines());
         showFiltersButton.setOnAction(event -> openWineFilterWindow());
         showCountButton.setOnAction(event -> openWineCountWindow());
+        parallelQueryButton.setOnAction(event -> openParallelQueryWindow()); // Handler for new button
         exitButton.setOnAction(event -> exitApplication());
     }
 
@@ -102,6 +106,25 @@ public class WineMenuController {
             Stage stage = new Stage();
             stage.setTitle("Wine Filter Options");
             stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // New method to open the parallel query window
+    private void openParallelQueryWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ParallelQueryView.fxml"));
+            Scene scene = new Scene(loader.load());
+
+            ParallelQueryController controller = loader.getController();
+            controller.setConnection(connection);
+
+            Stage stage = new Stage();
+            stage.setTitle("Parallel Queries");
+            stage.setScene(scene);
+            controller.setStage(stage);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

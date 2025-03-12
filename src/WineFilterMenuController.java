@@ -8,10 +8,14 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 
 public class WineFilterMenuController {
 
+    @FXML
+    private DatePicker dateFilterPicker;
     @FXML
     private ChoiceBox<String> colorChoiceBox;
     @FXML
@@ -42,6 +46,7 @@ public class WineFilterMenuController {
 
     @FXML
     private void initialize() {
+        dateFilterPicker.setValue(LocalDate.now());
         colorChoiceBox.setValue("Choose Color");
         qualityChoiceBox.setValue("Choose Quality");
         alcoholFilterChoice.setValue(null);  // Allow it to be empty initially
@@ -56,15 +61,18 @@ public class WineFilterMenuController {
 
     private void applyFilters() {
         // Get the selected values from the filters
+        LocalDate selectedDate = dateFilterPicker.getValue();
         String selectedColor = colorChoiceBox.getValue();
         String selectedQuality = qualityChoiceBox.getValue();
         String selectedAlcohol = alcoholFilterChoice.getValue();
         String phLevel = pHFilterChoice.getValue();
 
+        System.out.println("Selected Date: " + selectedDate);
         System.out.println("Selected Color: " + selectedColor);
         System.out.println("Selected Quality: " + selectedQuality);
         System.out.println("Selected Alcohol: " + selectedAlcohol);
         System.out.println("Selected pH Level: " + phLevel);
+
 
         // Use the QueryBuilder to add conditions based on selected filters
         if (selectedColor != null && !selectedColor.isEmpty() && !selectedColor.equals("Choose Color")) {
@@ -89,6 +97,13 @@ public class WineFilterMenuController {
         }
         if (phLevel != null && !phLevel.isEmpty()) {
             queryBuilder.addCondition("pH " + phLevel);
+        }
+
+        if (selectedDate != null) {
+            String formattedDate = selectedDate.getYear() + "/" + String.format("%02d", selectedDate.getMonthValue()) + "/" + String.format("%02d", selectedDate.getDayOfMonth());
+
+            System.out.println("Formatted date for query: " + formattedDate);
+            queryBuilder.addCondition("DATE_FORMAT(date, '%Y/%m/%d') = '" + formattedDate + "'");
         }
         System.out.println("Final Query: " + queryBuilder.getQuery());
         System.out.println("Filters applied.");
@@ -115,6 +130,9 @@ public class WineFilterMenuController {
         TableColumn<Wine, Integer> wineNumberColumn = new TableColumn<>("Wine Number");
         wineNumberColumn.setCellValueFactory(new PropertyValueFactory<>("wineNumber"));
 
+        TableColumn<Wine, LocalDate> dateColumn = new TableColumn<>("Date");
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+
         TableColumn<Wine, String> colorColumn = new TableColumn<>("Color");
         colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
 
@@ -127,12 +145,35 @@ public class WineFilterMenuController {
         TableColumn<Wine, Float> pHColumn = new TableColumn<>("pH");
         pHColumn.setCellValueFactory(new PropertyValueFactory<>("pH"));
 
-        TableColumn<Wine, String> fixedAcidityColumn = new TableColumn<>("fixed acidity");
+        TableColumn<Wine, Float> volatileAcidityColumn = new TableColumn<>("Volatile Acidity");
+        volatileAcidityColumn.setCellValueFactory(new PropertyValueFactory<>("volatileAcidity"));
+
+        TableColumn<Wine, String> fixedAcidityColumn = new TableColumn<>("Fixed Acidity");
         fixedAcidityColumn.setCellValueFactory(new PropertyValueFactory<>("fixedAcidity"));
-        // Add other columns as needed...
+
+        TableColumn<Wine, Float> citricAcidColumn = new TableColumn<>("Citric Acid");
+        citricAcidColumn.setCellValueFactory(new PropertyValueFactory<>("citricAcid"));
+
+        TableColumn<Wine, Float> residualSugarColumn = new TableColumn<>("Residual Sugar");
+        residualSugarColumn.setCellValueFactory(new PropertyValueFactory<>("residualSugar"));
+
+        TableColumn<Wine, Float> chloridesColumn = new TableColumn<>("Chlorides");
+        chloridesColumn.setCellValueFactory(new PropertyValueFactory<>("chlorides"));
+
+        TableColumn<Wine, Integer> freesulfurDioxideColumn = new TableColumn<>("Free Sulfur Dioxide");
+        freesulfurDioxideColumn.setCellValueFactory(new PropertyValueFactory<>("freeSulfurDioxide"));
+
+        TableColumn<Wine, Integer> totalsulfurDioxideColumn = new TableColumn<>("Total Sulfur Dioxide");
+        totalsulfurDioxideColumn.setCellValueFactory(new PropertyValueFactory<>("totalSulfurDioxide"));
+
+        TableColumn<Wine, Float> densityColumn = new TableColumn<>("Density");
+        densityColumn.setCellValueFactory(new PropertyValueFactory<>("density"));
+
+        TableColumn<Wine, Float> sulphatesColumn = new TableColumn<>("Sulphates");
+        sulphatesColumn.setCellValueFactory(new PropertyValueFactory<>("sulphates"));
 
         // Add columns to the TableView
-        tableView.getColumns().addAll(wineNumberColumn, colorColumn, qualityColumn, alcoholColumn, pHColumn, fixedAcidityColumn);
+        tableView.getColumns().addAll(wineNumberColumn, dateColumn, fixedAcidityColumn, volatileAcidityColumn, citricAcidColumn, residualSugarColumn, chloridesColumn, freesulfurDioxideColumn, totalsulfurDioxideColumn, densityColumn, pHColumn, sulphatesColumn, alcoholColumn, qualityColumn, colorColumn);
 
         // Convert List<Wine> to ObservableList and set it as the data for the TableView
         ObservableList<Wine> wineList = FXCollections.observableArrayList(wines);
@@ -156,10 +197,10 @@ public class WineFilterMenuController {
     }
     @FXML
     private void handleGoButtonAction() {
-            System.out.println("Executing query with filters...");
+        System.out.println("Executing query with filters...");
 
-            // Execute the query with applied filters first
-            executeQueryWithFilters();
+        // Execute the query with applied filters first
+        executeQueryWithFilters();
 
     }
     private void resetFilters() {

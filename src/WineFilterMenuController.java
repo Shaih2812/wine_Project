@@ -127,10 +127,12 @@ public class WineFilterMenuController {
         TableColumn<Wine, Float> pHColumn = new TableColumn<>("pH");
         pHColumn.setCellValueFactory(new PropertyValueFactory<>("pH"));
 
+        TableColumn<Wine, String> fixedAcidityColumn = new TableColumn<>("fixed acidity");
+        fixedAcidityColumn.setCellValueFactory(new PropertyValueFactory<>("fixedAcidity"));
         // Add other columns as needed...
 
         // Add columns to the TableView
-        tableView.getColumns().addAll(wineNumberColumn, colorColumn, qualityColumn, alcoholColumn, pHColumn);
+        tableView.getColumns().addAll(wineNumberColumn, colorColumn, qualityColumn, alcoholColumn, pHColumn, fixedAcidityColumn);
 
         // Convert List<Wine> to ObservableList and set it as the data for the TableView
         ObservableList<Wine> wineList = FXCollections.observableArrayList(wines);

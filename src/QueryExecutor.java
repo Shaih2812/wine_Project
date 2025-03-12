@@ -16,21 +16,21 @@ public class QueryExecutor {
 
             while (resultSet.next()) {
                 Wine wine = new Wine(
-                        resultSet.getInt("wine number"),
+                        resultSet.getInt("wine_number"),
                         resultSet.getDate("date"),
                         resultSet.getString("color"),
                         resultSet.getString("quality"),
                         resultSet.getFloat("alcohol"),
-                        resultSet.getInt("pH"),
-                        resultSet.getString("fixed acidity"),
-                        resultSet.getString("volatile acidity"),
+                        resultSet.getFloat("pH"),
+                        resultSet.getFloat("fixed acidity"),
+                        resultSet.getFloat("volatile acidity"),
                         resultSet.getFloat("citric acid"),
-                        resultSet.getInt("residual sugar"),
-                        resultSet.getString("chlorides"),
-                        resultSet.getFloat("free sulfur dioxide"),
+                        resultSet.getFloat("residual sugar"),
+                        resultSet.getFloat("chlorides"),
+                        resultSet.getInt("free sulfur dioxide"),
                         resultSet.getInt("total sulfur dioxide"),
-                        resultSet.getString("density"),
-                        resultSet.getString("sulphates")
+                        resultSet.getFloat("density"),
+                        resultSet.getFloat("sulphates")
                 );
                 wines.add(wine);
             }

@@ -1,6 +1,4 @@
-
 import java.sql.Date;
-import java.time.LocalDate;
 
 public class Wine {
     private int wineNumber;
@@ -8,22 +6,22 @@ public class Wine {
     private String color;
     private String quality;
     private float alcohol;
-    private int pH;
-    private String fixedAcidity;
-    private String volatileAcidity;
+    private float pH;
+    private float fixedAcidity;
+    private float volatileAcidity;
     private float citricAcid;
-    private int residualSugar;
-    private String chlorides;
-    private float freeSulfurDioxide;
+    private float residualSugar;
+    private float chlorides;
+    private int freeSulfurDioxide;
     private int totalSulfurDioxide;
-    private String density;
-    private String sulphates;
+    private float density;
+    private float sulphates;
 
     // Constructor
-    public Wine(int wineNumber, Date date, String color, String quality, float alcohol, int pH,
-                String fixedAcidity, String volatileAcidity, float citricAcid,
-                int residualSugar, String chlorides, float freeSulfurDioxide,
-                int totalSulfurDioxide, String density, String sulphates) {
+    public Wine(int wineNumber, Date date, String color, String quality, float alcohol, float pH,
+                float fixedAcidity, float volatileAcidity, float citricAcid,
+                float residualSugar, float chlorides, int freeSulfurDioxide,
+                int totalSulfurDioxide, float density, float sulphates) {
         this.wineNumber = wineNumber;
         this.date = date;
         this.color = color;
@@ -50,9 +48,13 @@ public class Wine {
         this.wineNumber = wineNumber;
     }
 
-    public Date getDate() {return date;}
+    public Date getDate() {
+        return date;
+    }
 
-    public void setdate(Date date) {this.date = date;}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public String getColor() {
         return color;
@@ -78,27 +80,27 @@ public class Wine {
         this.alcohol = alcohol;
     }
 
-    public int getPH() {
+    public float getPH() {
         return pH;
     }
 
-    public void setPH(int pH) {
+    public void setPH(float pH) {
         this.pH = pH;
     }
 
-    public String getFixedAcidity() {
+    public float getFixedAcidity() {
         return fixedAcidity;
     }
 
-    public void setFixedAcidity(String fixedAcidity) {
+    public void setFixedAcidity(float fixedAcidity) {
         this.fixedAcidity = fixedAcidity;
     }
 
-    public String getVolatileAcidity() {
+    public float getVolatileAcidity() {
         return volatileAcidity;
     }
 
-    public void setVolatileAcidity(String volatileAcidity) {
+    public void setVolatileAcidity(float volatileAcidity) {
         this.volatileAcidity = volatileAcidity;
     }
 
@@ -110,27 +112,27 @@ public class Wine {
         this.citricAcid = citricAcid;
     }
 
-    public int getResidualSugar() {
+    public float getResidualSugar() {
         return residualSugar;
     }
 
-    public void setResidualSugar(int residualSugar) {
+    public void setResidualSugar(float residualSugar) {
         this.residualSugar = residualSugar;
     }
 
-    public String getChlorides() {
+    public float getChlorides() {
         return chlorides;
     }
 
-    public void setChlorides(String chlorides) {
+    public void setChlorides(float chlorides) {
         this.chlorides = chlorides;
     }
 
-    public float getFreeSulfurDioxide() {
+    public int getFreeSulfurDioxide() {
         return freeSulfurDioxide;
     }
 
-    public void setFreeSulfurDioxide(float freeSulfurDioxide) {
+    public void setFreeSulfurDioxide(int freeSulfurDioxide) {
         this.freeSulfurDioxide = freeSulfurDioxide;
     }
 
@@ -142,19 +144,19 @@ public class Wine {
         this.totalSulfurDioxide = totalSulfurDioxide;
     }
 
-    public String getDensity() {
+    public float getDensity() {
         return density;
     }
 
-    public void setDensity(String density) {
+    public void setDensity(float density) {
         this.density = density;
     }
 
-    public String getSulphates() {
+    public float getSulphates() {
         return sulphates;
     }
 
-    public void setSulphates(String sulphates) {
+    public void setSulphates(float sulphates) {
         this.sulphates = sulphates;
     }
 }

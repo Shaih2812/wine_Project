@@ -17,7 +17,7 @@ public class Wine {
     private float density;
     private float sulphates;
 
-    // Constructor
+    // Construc
     public Wine(int wineNumber, Date date, String color, String quality, float alcohol, float pH,
                 float fixedAcidity, float volatileAcidity, float citricAcid,
                 float residualSugar, float chlorides, int freeSulfurDioxide,

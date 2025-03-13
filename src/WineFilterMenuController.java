@@ -74,7 +74,7 @@ public class WineFilterMenuController {
         System.out.println("Selected pH Level: " + phLevel);
 
 
-        // Use the QueryBuilder to add conditions based on selected filters
+
         if (selectedColor != null && !selectedColor.isEmpty() && !selectedColor.equals("Choose Color")) {
             queryBuilder.addCondition("color = '" + selectedColor + "'");
         }

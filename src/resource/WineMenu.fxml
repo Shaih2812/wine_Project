@@ -21,7 +21,7 @@
     <Button fx:id="showFiltersButton" text="Show Filtering Options" />
     <Button fx:id="showCountButton" text="Show Number of Wines" />
     <Button fx:id="parallelQueryButton" text="Parallel Queries" />
+    <Button fx:id="createDatabaseButton" text="Create New Database" />
     <Button fx:id="exitButton" text="Exit" />
-
 
 </VBox>

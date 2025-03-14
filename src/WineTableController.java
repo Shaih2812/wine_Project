@@ -94,34 +94,34 @@ public class WineTableController {
                         "NULL AS color, " +               // Not available in quality_wines
                         "`quality` AS quality, " +
                         "`alcohol` AS alcohol, " +
-                        "`pH` AS pH," +
-                        "`fixed Acidity` AS fixedAcidity," +
-                        "`volatile Acidity` AS volatileAcidity," +
-                        "`citric Acid` AS citricAcid," +
-                        "`residual Sugar` AS residualSugar, " +
-                        "`chlorides` AS chlorides, " +
-                        "`free Sulfur Dioxide` AS freeSulfurDioxide, " +
-                        "`total Sulfur Dioxide` AS totalSulfurDioxide, " +
-                        "`density` AS density, " +
-                        "`sulphates` AS sulphates " +
+                        "0 AS pH, " +
+                        "0 AS fixedAcidity, " +
+                        "0 AS volatileAcidity, " +
+                        "0 AS citricAcid, " +
+                        "0 AS residualSugar, " +
+                        "0 AS chlorides, " +
+                        "0 AS freeSulfurDioxide, " +
+                        "0 AS totalSulfurDioxide, " +
+                        "0 AS density, " +
+                        "0 AS sulphates " +
                         "FROM " + tableName;
             } else if (tableName.equals("strong_red_wines")) {
                 query = "SELECT " +
                         "`wine number` AS wineNumber, " +
                         "`date` AS date, " +
-                        "`color` AS color, " +               // Not available in quality_wines
-                        "NULL AS quality, " +
+                        "`color` AS color, " +
+                        "NULL AS quality, " +              // Not available in strong_red_wines
                         "`alcohol` AS alcohol, " +
-                        "`pH` AS pH," +
-                        "`fixed Acidity` AS fixedAcidity," +
-                        "`volatile Acidity` AS volatileAcidity," +
-                        "`citric Acid` AS citricAcid," +
-                        "`residual Sugar` AS residualSugar, " +
-                        "`chlorides` AS chlorides, " +
-                        "`free Sulfur Dioxide` AS freeSulfurDioxide, " +
-                        "`total Sulfur Dioxide` AS totalSulfurDioxide, " +
-                        "`density` AS density, " +
-                        "`sulphates` AS sulphates " +
+                        "0 AS pH, " +
+                        "0 AS fixedAcidity, " +
+                        "0 AS volatileAcidity, " +
+                        "0 AS citricAcid, " +
+                        "0 AS residualSugar, " +
+                        "0 AS chlorides, " +
+                        "0 AS freeSulfurDioxide, " +
+                        "0 AS totalSulfurDioxide, " +
+                        "0 AS density, " +
+                        "0 AS sulphates " +
                         "FROM " + tableName;
             } else {
                 // For any other table, do a regular query.
@@ -178,9 +178,8 @@ public class WineTableController {
         // loadData();
 
         backButton.setOnAction(event -> {
-            if (stage != null) {
-                stage.close();
-            }
+            Stage currentStage = (Stage) backButton.getScene().getWindow();
+            currentStage.close();
         });
     }
 }

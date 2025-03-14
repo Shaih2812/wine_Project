@@ -64,5 +64,7 @@ public class WineJDBC extends Application {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+
     }
 }

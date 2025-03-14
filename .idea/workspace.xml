@@ -4,18 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1c9daead-ddec-4b21-a82e-a350b96a2b60" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/lib1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/lib.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/WineJDBC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/WineJDBC.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resource/ParallelQueryView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/resource/ParallelQueryView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resource/WineFilterMenu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/resource/WineFilterMenu.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wine_Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/wine_Project.iml" afterDir="false" />
-    </list>
+    <list default="true" id="1c9daead-ddec-4b21-a82e-a350b96a2b60" name="Changes" comment="New styling added" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -85,6 +74,19 @@
       <option name="presentableId" value="Default" />
       <updated>1741944362015</updated>
     </task>
+    <task id="LOCAL‎-00001" summary="New styling added">
+      <option name="closed" value="true" />
+      <created>1741949734207</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL‎-00001" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1741949734207</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="New styling added" />
+    <option name="LAST_COMMIT_MESSAGE" value="New styling added" />
   </component>
 </project>

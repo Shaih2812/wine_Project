@@ -1,0 +1,264 @@
+Index: src/WineTableController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import javafx.collections.FXCollections;\r\nimport javafx.collections.ObservableList;\r\nimport javafx.fxml.FXML;\r\nimport javafx.scene.control.Button;\r\nimport javafx.scene.control.TableColumn;\r\nimport javafx.scene.control.TableView;\r\nimport javafx.scene.control.cell.PropertyValueFactory;\r\nimport javafx.stage.Stage;\r\n\r\nimport java.sql.Connection;\r\nimport java.sql.ResultSet;\r\nimport java.sql.Statement;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\n//test\r\n\r\npublic class WineTableController {\r\n\r\n    @FXML\r\n    private TableView<Wine> resultsTable;\r\n\r\n    @FXML\r\n    private TableColumn<Wine, String> dateColumn;\r\n\r\n    @FXML\r\n    private TableColumn<Wine, Integer> wineNumberColumn;\r\n    @FXML\r\n    private TableColumn<Wine, String> colorColumn;\r\n    @FXML\r\n    private TableColumn<Wine, String> qualityColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> alcoholColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> pHColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> fixedAcidityColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> volatileAcidityColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> citricAcidColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> residualSugarColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> chloridesColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> freeSulfurDioxideColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> totalSulfurDioxideColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> densityColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> sulphatesColumn;\r\n\r\n    @FXML\r\n    private Button backButton;\r\n\r\n    private Stage stage;\r\n    private String tableName;  // New variable to store the table name\r\n    private Connection connection;\r\n\r\n    public void setWines(List<Wine> wines) {\r\n        ObservableList<Wine> wineList = FXCollections.observableArrayList(wines);\r\n        resultsTable.setItems(wineList);\r\n    }\r\n\r\n    public void setStage(Stage stage) {\r\n        this.stage = stage;\r\n    }\r\n\r\n    public void setConnection(Connection connection) {\r\n        this.connection = connection;  // Set connection for database queries\r\n    }\r\n\r\n    public void setTableName(String tableName) {\r\n        this.tableName = tableName;  // Set the table name (quality_wines or strong_red_wines)\r\n    }\r\n\r\n    public void loadData() {\r\n        // Check if connection and tableName are set; if not, skip loading\r\n        if (connection == null || tableName == null) {\r\n            System.out.println(\"Connection or tableName not set, skipping loadData.\");\r\n            return;\r\n        }\r\n\r\n        List<Wine> wineList = new ArrayList<>();\r\n        try (Statement statement = connection.createStatement()) {\r\n            String query;\r\n            // Adjust the query for the new tables to alias columns appropriately.\r\n            if (tableName.equals(\"quality_wines\")) {\r\n                query = \"SELECT \" +\r\n                        \"`wine number` AS wineNumber, \" +\r\n                        \"`date` AS date, \" +\r\n                        \"`color` AS color, \" +               // Not available in quality_wines\r\n                        \"`quality` AS quality, \" +\r\n                        \"`alcohol` AS alcohol, \" +\r\n                        \"`pH` AS pH, \" +\r\n                        \"`fixed Acidity` AS fixedAcidity, \" +\r\n                        \"`volatile Acidity` AS volatileAcidity, \" +\r\n                        \"`citric Acid` AS citricAcid, \" +\r\n                        \"`residual Sugar` AS residualSugar, \" +\r\n                        \"`chlorides` AS chlorides, \" +\r\n                        \"`free Sulfur Dioxide` AS freeSulfurDioxide, \" +\r\n                        \"`total Sulfur Dioxide` AS totalSulfurDioxide, \" +\r\n                        \"`density` AS density, \" +\r\n                        \"`sulphates` AS sulphates \" +\r\n                        \"FROM \" + tableName;\r\n            } else if (tableName.equals(\"strong_red_wines\")) {\r\n                query = \"SELECT \" +\r\n                        \"`wine number` AS wineNumber, \" +\r\n                        \"`date` AS date, \" +\r\n                        \"`color` AS color, \" +\r\n                        \"`quality` AS quality, \" +              // Not available in strong_red_wines\r\n                        \"`alcohol` AS alcohol, \" +\r\n                        \"`pH` AS pH, \" +\r\n                        \"`fixed Acidity` AS fixedAcidity, \" +\r\n                        \"`volatile Acidity` AS volatileAcidity, \" +\r\n                        \"`citric Acid` AS citricAcid, \" +\r\n                        \"`residual Sugar` AS residualSugar, \" +\r\n                        \"`chlorides` AS chlorides, \" +\r\n                        \"`free Sulfur Dioxide` AS freeSulfurDioxide, \" +\r\n                        \"`total Sulfur Dioxide` AS totalSulfurDioxide, \" +\r\n                        \"`density` AS density, \" +\r\n                        \"`sulphates` AS sulphates \" +\r\n                        \"FROM \" + tableName;\r\n            } else {\r\n                // For any other table, do a regular query.\r\n                query = \"SELECT * FROM \" + tableName;\r\n            }\r\n\r\n            ResultSet resultSet = statement.executeQuery(query);\r\n\r\n            while (resultSet.next()) {\r\n                Wine wine = new Wine(\r\n                        resultSet.getInt(\"wineNumber\"),\r\n                        resultSet.getDate(\"date\"),\r\n                        resultSet.getString(\"color\"),\r\n                        resultSet.getString(\"quality\"),\r\n                        resultSet.getFloat(\"alcohol\"),\r\n                        resultSet.getFloat(\"pH\"),\r\n                        resultSet.getFloat(\"fixedAcidity\"),\r\n                        resultSet.getFloat(\"volatileAcidity\"),\r\n                        resultSet.getFloat(\"citricAcid\"),\r\n                        resultSet.getFloat(\"residualSugar\"),\r\n                        resultSet.getFloat(\"chlorides\"),\r\n                        resultSet.getInt(\"freeSulfurDioxide\"),\r\n                        resultSet.getInt(\"totalSulfurDioxide\"),\r\n                        resultSet.getFloat(\"density\"),\r\n                        resultSet.getFloat(\"sulphates\")\r\n                );\r\n                wineList.add(wine);\r\n            }\r\n            setWines(wineList);\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    @FXML\r\n    private void initialize() {\r\n        wineNumberColumn.setCellValueFactory(new PropertyValueFactory<>(\"wineNumber\"));\r\n        dateColumn.setCellValueFactory(new PropertyValueFactory<>(\"date\"));\r\n        colorColumn.setCellValueFactory(new PropertyValueFactory<>(\"color\"));\r\n        qualityColumn.setCellValueFactory(new PropertyValueFactory<>(\"quality\"));\r\n        alcoholColumn.setCellValueFactory(new PropertyValueFactory<>(\"alcohol\"));\r\n        pHColumn.setCellValueFactory(new PropertyValueFactory<>(\"pH\"));\r\n        fixedAcidityColumn.setCellValueFactory(new PropertyValueFactory<>(\"fixedAcidity\"));\r\n        volatileAcidityColumn.setCellValueFactory(new PropertyValueFactory<>(\"volatileAcidity\"));\r\n        citricAcidColumn.setCellValueFactory(new PropertyValueFactory<>(\"citricAcid\"));\r\n        residualSugarColumn.setCellValueFactory(new PropertyValueFactory<>(\"residualSugar\"));\r\n        chloridesColumn.setCellValueFactory(new PropertyValueFactory<>(\"chlorides\"));\r\n        freeSulfurDioxideColumn.setCellValueFactory(new PropertyValueFactory<>(\"freeSulfurDioxide\"));\r\n        totalSulfurDioxideColumn.setCellValueFactory(new PropertyValueFactory<>(\"totalSulfurDioxide\"));\r\n        densityColumn.setCellValueFactory(new PropertyValueFactory<>(\"density\"));\r\n        sulphatesColumn.setCellValueFactory(new PropertyValueFactory<>(\"sulphates\"));\r\n\r\n        // Do not call loadData() here because connection/tableName might not be set yet.\r\n        // loadData();\r\n\r\n        backButton.setOnAction(event -> {\r\n            Stage currentStage = (Stage) backButton.getScene().getWindow();\r\n            currentStage.close();\r\n        });\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/WineTableController.java b/src/WineTableController.java
+--- a/src/WineTableController.java	(revision 8590a69832e6df67bdf00dbc1b212d201d09503c)
++++ b/src/WineTableController.java	(date 1741946519175)
+@@ -13,7 +13,7 @@
+ import java.util.ArrayList;
+ import java.util.List;
+ 
+-//test
++
+ 
+ public class WineTableController {
+ 
+@@ -56,7 +56,7 @@
+     private Button backButton;
+ 
+     private Stage stage;
+-    private String tableName;  // New variable to store the table name
++    private String tableName;
+     private Connection connection;
+ 
+     public void setWines(List<Wine> wines) {
+@@ -91,7 +91,7 @@
+                 query = "SELECT " +
+                         "`wine number` AS wineNumber, " +
+                         "`date` AS date, " +
+-                        "`color` AS color, " +               // Not available in quality_wines
++                        "`color` AS color, " +
+                         "`quality` AS quality, " +
+                         "`alcohol` AS alcohol, " +
+                         "`pH` AS pH, " +
+@@ -110,7 +110,7 @@
+                         "`wine number` AS wineNumber, " +
+                         "`date` AS date, " +
+                         "`color` AS color, " +
+-                        "`quality` AS quality, " +              // Not available in strong_red_wines
++                        "`quality` AS quality, " +
+                         "`alcohol` AS alcohol, " +
+                         "`pH` AS pH, " +
+                         "`fixed Acidity` AS fixedAcidity, " +
+@@ -174,8 +174,7 @@
+         densityColumn.setCellValueFactory(new PropertyValueFactory<>("density"));
+         sulphatesColumn.setCellValueFactory(new PropertyValueFactory<>("sulphates"));
+ 
+-        // Do not call loadData() here because connection/tableName might not be set yet.
+-        // loadData();
++      
+ 
+         backButton.setOnAction(event -> {
+             Stage currentStage = (Stage) backButton.getScene().getWindow();
+Index: .idea/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+deleted file mode 100644
+--- a/.idea/.gitignore	(revision 8590a69832e6df67bdf00dbc1b212d201d09503c)
++++ /dev/null	(revision 8590a69832e6df67bdf00dbc1b212d201d09503c)
+@@ -1,3 +0,0 @@
+-# Default ignored files
+-/shelf/
+-/workspace.xml
+Index: .idea/uiDesigner.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/uiDesigner.xml b/.idea/uiDesigner.xml
+deleted file mode 100644
+--- a/.idea/uiDesigner.xml	(revision 8590a69832e6df67bdf00dbc1b212d201d09503c)
++++ /dev/null	(revision 8590a69832e6df67bdf00dbc1b212d201d09503c)
+@@ -1,124 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="Palette2">
+-    <group name="Swing">
+-      <item class="com.intellij.uiDesigner.HSpacer" tooltip-text="Horizontal Spacer" icon="/com/intellij/uiDesigner/icons/hspacer.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="1" hsize-policy="6" anchor="0" fill="1" />
+-      </item>
+-      <item class="com.intellij.uiDesigner.VSpacer" tooltip-text="Vertical Spacer" icon="/com/intellij/uiDesigner/icons/vspacer.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="1" anchor="0" fill="2" />
+-      </item>
+-      <item class="javax.swing.JPanel" icon="/com/intellij/uiDesigner/icons/panel.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3" />
+-      </item>
+-      <item class="javax.swing.JScrollPane" icon="/com/intellij/uiDesigner/icons/scrollPane.svg" removable="false" auto-create-binding="false" can-attach-label="true">
+-        <default-constraints vsize-policy="7" hsize-policy="7" anchor="0" fill="3" />
+-      </item>
+-      <item class="javax.swing.JButton" icon="/com/intellij/uiDesigner/icons/button.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="3" anchor="0" fill="1" />
+-        <initial-values>
+-          <property name="text" value="Button" />
+-        </initial-values>
+-      </item>
+-      <item class="javax.swing.JRadioButton" icon="/com/intellij/uiDesigner/icons/radioButton.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
+-        <initial-values>
+-          <property name="text" value="RadioButton" />
+-        </initial-values>
+-      </item>
+-      <item class="javax.swing.JCheckBox" icon="/com/intellij/uiDesigner/icons/checkBox.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
+-        <initial-values>
+-          <property name="text" value="CheckBox" />
+-        </initial-values>
+-      </item>
+-      <item class="javax.swing.JTextField" icon="/com/intellij/uiDesigner/icons/textField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
+-          <preferred-size width="150" height="-1" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JLabel" icon="/com/intellij/uiDesigner/icons/label.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="0" anchor="8" fill="0" />
+-        <initial-values>
+-          <property name="text" value="Label" />
+-        </initial-values>
+-      </item>
+-      <item class="javax.swing.JPasswordField" icon="/com/intellij/uiDesigner/icons/passwordField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
+-          <preferred-size width="150" height="-1" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JFormattedTextField" icon="/com/intellij/uiDesigner/icons/formattedTextField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
+-          <preferred-size width="150" height="-1" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JTextArea" icon="/com/intellij/uiDesigner/icons/textArea.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JTextPane" icon="/com/intellij/uiDesigner/icons/textPane.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JEditorPane" icon="/com/intellij/uiDesigner/icons/editorPane.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JComboBox" icon="/com/intellij/uiDesigner/icons/comboBox.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="2" anchor="8" fill="1" />
+-      </item>
+-      <item class="javax.swing.JTable" icon="/com/intellij/uiDesigner/icons/table.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JList" icon="/com/intellij/uiDesigner/icons/list.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="2" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JTree" icon="/com/intellij/uiDesigner/icons/tree.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JTabbedPane" icon="/com/intellij/uiDesigner/icons/tabbedPane.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
+-          <preferred-size width="200" height="200" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JSplitPane" icon="/com/intellij/uiDesigner/icons/splitPane.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
+-          <preferred-size width="200" height="200" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JSpinner" icon="/com/intellij/uiDesigner/icons/spinner.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
+-      </item>
+-      <item class="javax.swing.JSlider" icon="/com/intellij/uiDesigner/icons/slider.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
+-      </item>
+-      <item class="javax.swing.JSeparator" icon="/com/intellij/uiDesigner/icons/separator.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3" />
+-      </item>
+-      <item class="javax.swing.JProgressBar" icon="/com/intellij/uiDesigner/icons/progressbar.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1" />
+-      </item>
+-      <item class="javax.swing.JToolBar" icon="/com/intellij/uiDesigner/icons/toolbar.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1">
+-          <preferred-size width="-1" height="20" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JToolBar$Separator" icon="/com/intellij/uiDesigner/icons/toolbarSeparator.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="0" anchor="0" fill="1" />
+-      </item>
+-      <item class="javax.swing.JScrollBar" icon="/com/intellij/uiDesigner/icons/scrollbar.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="0" anchor="0" fill="2" />
+-      </item>
+-    </group>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_X\" default=\"true\" project-jdk-name=\"openjdk-23\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 8590a69832e6df67bdf00dbc1b212d201d09503c)
++++ b/.idea/misc.xml	(date 1741945806560)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" default="true" project-jdk-name="openjdk-23" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_23" default="true" project-jdk-name="openjdk-23" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: .idea/libraries/lib.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\r\n  <library name=\"lib\">\r\n    <CLASSES>\r\n      <root url=\"file://$PROJECT_DIR$/../../../../../../JAVAFX/javafx-sdk-23.0.1/lib\" />\r\n    </CLASSES>\r\n    <JAVADOC />\r\n    <SOURCES />\r\n    <jarDirectory url=\"file://$PROJECT_DIR$/../../../../../../JAVAFX/javafx-sdk-23.0.1/lib\" recursive=\"false\" />\r\n  </library>\r\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/lib.xml b/.idea/libraries/lib.xml
+--- a/.idea/libraries/lib.xml	(revision 8590a69832e6df67bdf00dbc1b212d201d09503c)
++++ b/.idea/libraries/lib.xml	(date 1741945806574)
+@@ -1,10 +1,10 @@
+ <component name="libraryTable">
+   <library name="lib">
+     <CLASSES>
+-      <root url="file://$PROJECT_DIR$/../../../../../../JAVAFX/javafx-sdk-23.0.1/lib" />
++      <root url="file://$USER_HOME$/Downloads/openjfx-23.0.1_windows-x64_bin-sdk/javafx-sdk-23.0.1/lib" />
+     </CLASSES>
+     <JAVADOC />
+     <SOURCES />
+-    <jarDirectory url="file://$PROJECT_DIR$/../../../../../../JAVAFX/javafx-sdk-23.0.1/lib" recursive="false" />
++    <jarDirectory url="file://$USER_HOME$/Downloads/openjfx-23.0.1_windows-x64_bin-sdk/javafx-sdk-23.0.1/lib" recursive="false" />
+   </library>
+ </component>
+\ No newline at end of file
+Index: .idea/libraries/mysql_connector_j_9_1_0.xml
+===================================================================
+diff --git a/.idea/libraries/mysql_connector_j_9_1_0.xml b/.idea/libraries/mysql_connector_j_9_1_0.xml
+new file mode 100644
+--- /dev/null	(date 1741945806584)
++++ b/.idea/libraries/mysql_connector_j_9_1_0.xml	(date 1741945806584)
+@@ -0,0 +1,9 @@
++<component name="libraryTable">
++  <library name="mysql-connector-j-9.1.0">
++    <CLASSES>
++      <root url="jar://$PROJECT_DIR$/lib/mysql-connector-j-9.1.0.jar!/" />
++    </CLASSES>
++    <JAVADOC />
++    <SOURCES />
++  </library>
++</component>
+\ No newline at end of file

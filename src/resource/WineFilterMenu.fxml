@@ -7,81 +7,95 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
 
-<VBox alignment="CENTER" prefHeight="640.0" prefWidth="362.0" spacing="10" style="-fx-background-image: url('KatzrinBottle.jpg'); -fx-background-size: auto; -fx-background-repeat: no-repeat; -fx-background-position: center; -fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WineFilterMenuController">
-    <Text layoutX="108.0" layoutY="175.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="0.3" text="Choose Starting Dates">
-        <font>
-            <Font name="Calibri Italic" size="22.0" />
-        </font>
-    </Text>
-    <DatePicker fx:id="startDateFilterPicker" />
-   <Text stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="0.3" text="Choose End Dates">
-      <font>
-         <Font name="Calibri Italic" size="22.0" />
-      </font>
-   </Text>
-    <DatePicker fx:id="endDateFilterPicker" />
+<AnchorPane minHeight="640.0" minWidth="400.0" prefHeight="640.0" prefWidth="400.0" style="-fx-background-image: url('KatzrinBottle.jpg');
+                -fx-background-size: 100% 100%;
+                -fx-background-repeat: no-repeat;
+                -fx-background-position: center center;"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WineFilterMenuController">
+    <VBox alignment="CENTER" spacing="15" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+        <padding>
+            <Insets top="40" right="40" bottom="40" left="40"/>
+        </padding>
 
+        <VBox spacing="15" alignment="CENTER" style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 10; -fx-padding: 20;">
+            <Text stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="0.3" text="Choose Starting Dates">
+                <font>
+                    <Font name="Calibri Italic" size="22.0" />
+                </font>
+            </Text>
+            <DatePicker fx:id="startDateFilterPicker" prefWidth="300"/>
 
-    <Text stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="0.3" text="Choose Wine Color">
-        <font>
-            <Font name="Calibri Italic" size="22.0" />
-        </font>
-    </Text>
+            <Text stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="0.3" text="Choose End Dates">
+                <font>
+                    <Font name="Calibri Italic" size="22.0" />
+                </font>
+            </Text>
+            <DatePicker fx:id="endDateFilterPicker" prefWidth="300"/>
 
-    <ChoiceBox fx:id="colorChoiceBox" prefWidth="150.0">
-        <items>
-            <FXCollections fx:factory="observableArrayList">
-                <String fx:value="Red" />
-                <String fx:value="White" />
-                <String fx:value="All" />
-            </FXCollections>
-        </items>
-    </ChoiceBox>
+            <Text stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="0.3" text="Choose Wine Color">
+                <font>
+                    <Font name="Calibri Italic" size="22.0" />
+                </font>
+            </Text>
+            <ChoiceBox fx:id="colorChoiceBox" prefWidth="300">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Red" />
+                        <String fx:value="White" />
+                        <String fx:value="All" />
+                    </FXCollections>
+                </items>
+            </ChoiceBox>
 
-    <Text stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.3" text="Choose Wine Quality">
-        <font>
-            <Font name="Calibri Italic" size="22.0" />
-        </font>
-    </Text>
+            <Text stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.3" text="Choose Wine Quality">
+                <font>
+                    <Font name="Calibri Italic" size="22.0" />
+                </font>
+            </Text>
+            <ChoiceBox fx:id="qualityChoiceBox" prefWidth="300">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Extremely dissatisfied" />
+                        <String fx:value="Moderately dissatisfied" />
+                        <String fx:value="Slightly dissatisfied" />
+                        <String fx:value="Neutral" />
+                        <String fx:value="Slightly satisfied" />
+                        <String fx:value="Moderately satisfied" />
+                        <String fx:value="Extremely satisfied" />
+                    </FXCollections>
+                </items>
+            </ChoiceBox>
 
-    <ChoiceBox fx:id="qualityChoiceBox" prefWidth="150.0">
-        <items>
-            <FXCollections fx:factory="observableArrayList">
-                <String fx:value="Extremely dissatisfied" />
-                <String fx:value="Moderately dissatisfied" />
-                <String fx:value="Slightly dissatisfied" />
-                <String fx:value="Neutral" />
-                <String fx:value="Slightly satisfied" />
-                <String fx:value="Moderately satisfied" />
-                <String fx:value="Extremely satisfied" />
-            </FXCollections>
-        </items>
-    </ChoiceBox>
+            <ComboBox fx:id="alcoholFilterChoice" prefWidth="300" promptText="Choose Alcohol Levels">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="&gt; 12" />
+                        <String fx:value="= 12" />
+                        <String fx:value="&lt; 12" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
 
-    <ComboBox fx:id="alcoholFilterChoice" prefWidth="150.0" promptText="Choose Alcohol Levels">
-        <items>
-            <FXCollections fx:factory="observableArrayList">
-                <String fx:value="&gt; 12" />
-                <String fx:value="= 12" />
-                <String fx:value="&lt; 12" />
-            </FXCollections>
-        </items>
-    </ComboBox>
+            <ComboBox fx:id="pHFilterChoice" prefWidth="300" promptText="Choose pH Levels">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="&gt; 3" />
+                        <String fx:value="&lt; 3" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
 
-    <ComboBox fx:id="pHFilterChoice" prefWidth="150.0" promptText="Choose pH Levels">
-        <items>
-            <FXCollections fx:factory="observableArrayList">
-                <String fx:value="&gt; 3" />
-                <String fx:value="&lt; 3" />
-            </FXCollections>
-        </items>
-    </ComboBox>
-
-    <Button fx:id="applyFiltersButton" text="Apply Filters" />
-    <Button fx:id="goButton" onAction="#handleGoButtonAction" text="Go!" />
-    <Button fx:id="resetFiltersButton" text="Reset Filters" />
-    <Button fx:id="backToMainMenuButton" text="Back to Main Menu" />
-</VBox>
+            <VBox spacing="10" alignment="CENTER">
+                <Button fx:id="applyFiltersButton" text="Apply Filters" prefWidth="250"/>
+                <Button fx:id="goButton" text="Go!" prefWidth="250"/>
+                <Button fx:id="resetFiltersButton" text="Reset Filters" prefWidth="250"/>
+                <Button fx:id="backToMainMenuButton" text="Back to Main Menu" prefWidth="250"/>
+            </VBox>
+        </VBox>
+    </VBox>
+</AnchorPane>

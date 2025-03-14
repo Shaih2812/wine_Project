@@ -13,12 +13,7 @@ public class ParallelQueryExecutor {
         this.executorService = Executors.newFixedThreadPool(2);
     }
 
-    /**
-     * Execute two queries concurrently and return the results as they complete
-     * @param query1 First query to execute
-     * @param query2 Second query to execute
-     * @return A pair of CompletableFuture objects containing the results of each query
-     */
+
     public QueryResultPair executeQueriesParallel(String query1, String query2) {
         CompletableFuture<List<Wine>> future1 = CompletableFuture.supplyAsync(
                 () -> queryExecutor.executeQuery(query1),
@@ -33,13 +28,7 @@ public class ParallelQueryExecutor {
         return new QueryResultPair(future1, future2);
     }
 
-    /**
-     * Execute two count queries concurrently
-     * @param query1 First count query
-     * @param query2 Second count query
-     * @param description1 Description for first query
-     * @param description2 Description for second query
-     */
+
     public void executeCountQueriesParallel(String query1, String query2, String description1, String description2) {
         CompletableFuture.runAsync(
                 () -> queryExecutor.executeCountQuery(query1, description1),
@@ -52,18 +41,14 @@ public class ParallelQueryExecutor {
         );
     }
 
-    /**
-     * Shutdown the executor service
-     */
+
     public void shutdown() {
         if (executorService != null && !executorService.isShutdown()) {
             executorService.shutdown();
         }
     }
 
-    /**
-     * Class to hold a pair of query results as CompletableFutures
-     */
+
     public class QueryResultPair {
         private final CompletableFuture<List<Wine>> result1;
         private final CompletableFuture<List<Wine>> result2;
@@ -81,10 +66,7 @@ public class ParallelQueryExecutor {
             return result2;
         }
 
-        /**
-         * Wait for both queries to complete and return a combined list of results
-         * @return Combined list of wines from both queries
-         */
+
         public List<Wine> getCombinedResults() {
             List<Wine> wines1 = result1.join();
             List<Wine> wines2 = result2.join();

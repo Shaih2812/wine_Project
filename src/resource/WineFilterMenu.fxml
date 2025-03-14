@@ -11,12 +11,18 @@
 <?import javafx.scene.text.Text?>
 
 <VBox alignment="CENTER" prefHeight="640.0" prefWidth="362.0" spacing="10" style="-fx-background-image: url('KatzrinBottle.jpg'); -fx-background-size: auto; -fx-background-repeat: no-repeat; -fx-background-position: center; -fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WineFilterMenuController">
-    <Text layoutX="108.0" layoutY="175.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="0.3" text="Choose Dates">
+    <Text layoutX="108.0" layoutY="175.0" stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="0.3" text="Choose Starting Dates">
         <font>
             <Font name="Calibri Italic" size="22.0" />
         </font>
     </Text>
-    <DatePicker fx:id="dateFilterPicker" />
+    <DatePicker fx:id="startDateFilterPicker" />
+   <Text stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="0.3" text="Choose End Dates">
+      <font>
+         <Font name="Calibri Italic" size="22.0" />
+      </font>
+   </Text>
+    <DatePicker fx:id="endDateFilterPicker" />
 
 
     <Text stroke="WHITE" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" strokeWidth="0.3" text="Choose Wine Color">

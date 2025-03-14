@@ -22,12 +22,12 @@ public class WineCountMenuController {
 
     private Connection connection;
 
-    // Method to set the database connection
+
     public void setConnection(Connection connection) {
         this.connection = connection;
     }
 
-    // Initialize method, executed after FXML is loaded
+
     @FXML
     private void initialize() {
         // Setting up button actions without relying on the scene
@@ -40,7 +40,7 @@ public class WineCountMenuController {
     }
 
     private void handleWineCount(String type) {
-        String query = "";
+        String query;
 
         switch (type) {
             case "All wines":

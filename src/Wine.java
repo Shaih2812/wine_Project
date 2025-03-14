@@ -39,7 +39,7 @@ public class Wine {
         this.sulphates = sulphates;
     }
 
-    // Getters and Setters
+
     public int getWineNumber() {
         return wineNumber;
     }

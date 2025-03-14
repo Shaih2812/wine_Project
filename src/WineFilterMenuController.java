@@ -15,7 +15,9 @@ import java.util.Locale;
 public class WineFilterMenuController {
 
     @FXML
-    private DatePicker dateFilterPicker;
+    private DatePicker startDateFilterPicker;
+    @FXML
+    private DatePicker endDateFilterPicker;
     @FXML
     private ChoiceBox<String> colorChoiceBox;
     @FXML
@@ -46,7 +48,13 @@ public class WineFilterMenuController {
 
     @FXML
     private void initialize() {
-        dateFilterPicker.setValue(LocalDate.now());
+        // Set default dates - start date to 2022-01-01, end date to 2024-12-10
+        LocalDate startDate = LocalDate.of(2022, 1, 1);
+        LocalDate endDate = LocalDate.of(2024, 12, 10);
+
+        startDateFilterPicker.setValue(startDate);
+        endDateFilterPicker.setValue(endDate);
+
         colorChoiceBox.setValue("Choose Color");
         qualityChoiceBox.setValue("Choose Quality");
         alcoholFilterChoice.setValue(null);  // Allow it to be empty initially
@@ -60,21 +68,25 @@ public class WineFilterMenuController {
     }
 
     private void applyFilters() {
+        // Reset the query builder before adding new conditions
+        queryBuilder.resetQuery();
+
         // Get the selected values from the filters
-        LocalDate selectedDate = dateFilterPicker.getValue();
+        LocalDate startDate = startDateFilterPicker.getValue();
+        LocalDate endDate = endDateFilterPicker.getValue();
         String selectedColor = colorChoiceBox.getValue();
         String selectedQuality = qualityChoiceBox.getValue();
         String selectedAlcohol = alcoholFilterChoice.getValue();
         String phLevel = pHFilterChoice.getValue();
 
-        System.out.println("Selected Date: " + selectedDate);
+        System.out.println("Selected Start Date: " + startDate);
+        System.out.println("Selected End Date: " + endDate);
         System.out.println("Selected Color: " + selectedColor);
         System.out.println("Selected Quality: " + selectedQuality);
         System.out.println("Selected Alcohol: " + selectedAlcohol);
         System.out.println("Selected pH Level: " + phLevel);
 
-
-
+        // Use the QueryBuilder to add conditions based on selected filters
         if (selectedColor != null && !selectedColor.isEmpty() && !selectedColor.equals("Choose Color")) {
             queryBuilder.addCondition("color = '" + selectedColor + "'");
         }
@@ -99,17 +111,22 @@ public class WineFilterMenuController {
             queryBuilder.addCondition("pH " + phLevel);
         }
 
-        if (selectedDate != null) {
-            String formattedDate = selectedDate.getYear() + "/" + String.format("%02d", selectedDate.getMonthValue()) + "/" + String.format("%02d", selectedDate.getDayOfMonth());
+        if (startDate != null && endDate != null) {
+            String formattedStartDate = startDate.getYear() + "/" + String.format("%02d", startDate.getMonthValue()) + "/" + String.format("%02d", startDate.getDayOfMonth());
+            String formattedEndDate = endDate.getYear() + "/" + String.format("%02d", endDate.getMonthValue()) + "/" + String.format("%02d", endDate.getDayOfMonth());
 
-            System.out.println("Formatted date for query: " + formattedDate);
-            queryBuilder.addCondition("DATE_FORMAT(date, '%Y/%m/%d') = '" + formattedDate + "'");
+            System.out.println("Formatted start date for query: " + formattedStartDate);
+            System.out.println("Formatted end date for query: " + formattedEndDate);
+            queryBuilder.addCondition("DATE_FORMAT(date, '%Y/%m/%d') BETWEEN '" + formattedStartDate + "' AND '" + formattedEndDate + "'");
         }
         System.out.println("Final Query: " + queryBuilder.getQuery());
         System.out.println("Filters applied.");
     }
 
     private void executeQueryWithFilters() {
+        // Apply filters first to ensure we have the latest query
+        applyFilters();
+
         // Get the constructed query
         String query = queryBuilder.getQuery();
 
@@ -205,6 +222,11 @@ public class WineFilterMenuController {
     }
     private void resetFilters() {
         // Reset all filter values
+        LocalDate startDate = LocalDate.of(2022, 1, 1);
+        LocalDate endDate = LocalDate.of(2024, 12, 10);
+
+        startDateFilterPicker.setValue(startDate);
+        endDateFilterPicker.setValue(endDate);
         colorChoiceBox.setValue("Choose Color");
         qualityChoiceBox.setValue("Choose Quality");
         alcoholFilterChoice.setValue(null);

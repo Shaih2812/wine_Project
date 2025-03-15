@@ -15,7 +15,7 @@
         <Button fx:id="executeParallelQueriesButton" text="Alcohol &gt; 12% and pH &lt; 3" />
         <Button fx:id="compareRedWhiteButton" text="Compare Red and White Wines" />
     </HBox>
-     <Button fx:id="backButton" alignment="CENTER" text="Back" />
+    <Button fx:id="backButton" alignment="CENTER" text="Back" />
 
     <Label fx:id="statusLabel" alignment="CENTER" contentDisplay="CENTER" text="Ready to execute queries" />
 </VBox>

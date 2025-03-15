@@ -31,9 +31,13 @@ public class WineJDBC extends Application {
         controller.setQueryExecutor(queryExecutor);
         controller.setQueryBuilder(queryBuilder);
 
+        // Create scene and load CSS
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/resource/styles.css").toExternalForm());
+
         // Setup and show the stage
         primaryStage.setTitle("Wine Database");
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 

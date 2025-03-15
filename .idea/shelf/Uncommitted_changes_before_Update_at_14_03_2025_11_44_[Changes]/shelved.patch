@@ -1,0 +1,375 @@
+Index: src/WineJDBC.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import javafx.application.Application;\r\nimport javafx.fxml.FXMLLoader;\r\nimport javafx.scene.Parent;\r\nimport javafx.scene.Scene;\r\nimport javafx.stage.Stage;\r\nimport java.sql.Connection;\r\nimport java.sql.DriverManager;\r\nimport java.sql.SQLException;\r\n\r\npublic class WineJDBC extends Application {\r\n\r\n    private static Connection connection;\r\n\r\n    public static Connection getConnection() {\r\n        return connection;\r\n    }\r\n\r\n    @Override\r\n    public void start(Stage primaryStage) throws Exception {\r\n        // Load the FXML file\r\n        FXMLLoader loader = new FXMLLoader(getClass().getResource(\"/WineMenu.fxml\"));\r\n        Parent root = loader.load();\r\n\r\n        // Initialize QueryBuilder and QueryExecutor\r\n        QueryBuilder queryBuilder = new QueryBuilder();\r\n        QueryExecutor queryExecutor = new QueryExecutor(connection);\r\n\r\n        // Get the controller and pass dependencies\r\n        WineMenuController controller = loader.getController();\r\n        controller.setConnection(connection);\r\n        controller.setQueryExecutor(queryExecutor);\r\n        controller.setQueryBuilder(queryBuilder);\r\n\r\n        // Setup and show the stage\r\n        primaryStage.setTitle(\"Wine Database\");\r\n        primaryStage.setScene(new Scene(root));\r\n        primaryStage.show();\r\n    }\r\n\r\n    public static void main(String[] args) {\r\n        // Establish the SQL connection\r\n        try {\r\n            connection = DriverManager.getConnection(\r\n                    \"jdbc:mysql://127.0.0.1:3306/wine_project\",\r\n                    \"root\",\r\n                    \"Sod123456\"\r\n            );\r\n            System.out.println(\"Connected to the database successfully.\");\r\n        } catch (SQLException e) {\r\n            System.out.println(\"SQL Error: \" + e.getMessage());\r\n            e.printStackTrace();\r\n            return;\r\n        }\r\n\r\n        // Launch the JavaFX application\r\n        launch(args);\r\n\r\n        // Close the connection on exit\r\n        try {\r\n            if (connection != null && !connection.isClosed()) {\r\n                connection.close();\r\n                System.out.println(\"Database connection closed.\");\r\n            }\r\n        } catch (SQLException e) {\r\n            e.printStackTrace();\r\n        }\r\n\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/WineJDBC.java b/src/WineJDBC.java
+--- a/src/WineJDBC.java	(revision 08081ae4d538553620631af69f8c954aae7dd1cc)
++++ b/src/WineJDBC.java	(date 1741945416572)
+@@ -18,7 +18,7 @@
+     @Override
+     public void start(Stage primaryStage) throws Exception {
+         // Load the FXML file
+-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/WineMenu.fxml"));
++        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resource/WineMenu.fxml"));
+         Parent root = loader.load();
+ 
+         // Initialize QueryBuilder and QueryExecutor
+Index: src/WineTableController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import javafx.collections.FXCollections;\r\nimport javafx.collections.ObservableList;\r\nimport javafx.fxml.FXML;\r\nimport javafx.scene.control.Button;\r\nimport javafx.scene.control.TableColumn;\r\nimport javafx.scene.control.TableView;\r\nimport javafx.scene.control.cell.PropertyValueFactory;\r\nimport javafx.stage.Stage;\r\n\r\nimport java.sql.Connection;\r\nimport java.sql.ResultSet;\r\nimport java.sql.Statement;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\n//test\r\n\r\npublic class WineTableController {\r\n\r\n    @FXML\r\n    private TableView<Wine> resultsTable;\r\n\r\n    @FXML\r\n    private TableColumn<Wine, String> dateColumn;\r\n\r\n    @FXML\r\n    private TableColumn<Wine, Integer> wineNumberColumn;\r\n    @FXML\r\n    private TableColumn<Wine, String> colorColumn;\r\n    @FXML\r\n    private TableColumn<Wine, String> qualityColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> alcoholColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> pHColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> fixedAcidityColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> volatileAcidityColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> citricAcidColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> residualSugarColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> chloridesColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> freeSulfurDioxideColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> totalSulfurDioxideColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> densityColumn;\r\n    @FXML\r\n    private TableColumn<Wine, Float> sulphatesColumn;\r\n\r\n    @FXML\r\n    private Button backButton;\r\n\r\n    private Stage stage;\r\n    private String tableName;  // New variable to store the table name\r\n    private Connection connection;\r\n\r\n    public void setWines(List<Wine> wines) {\r\n        ObservableList<Wine> wineList = FXCollections.observableArrayList(wines);\r\n        resultsTable.setItems(wineList);\r\n    }\r\n\r\n    public void setStage(Stage stage) {\r\n        this.stage = stage;\r\n    }\r\n\r\n    public void setConnection(Connection connection) {\r\n        this.connection = connection;  // Set connection for database queries\r\n    }\r\n\r\n    public void setTableName(String tableName) {\r\n        this.tableName = tableName;  // Set the table name (quality_wines or strong_red_wines)\r\n    }\r\n\r\n    public void loadData() {\r\n        // Check if connection and tableName are set; if not, skip loading\r\n        if (connection == null || tableName == null) {\r\n            System.out.println(\"Connection or tableName not set, skipping loadData.\");\r\n            return;\r\n        }\r\n\r\n        List<Wine> wineList = new ArrayList<>();\r\n        try (Statement statement = connection.createStatement()) {\r\n            String query;\r\n            // Adjust the query for the new tables to alias columns appropriately.\r\n            if (tableName.equals(\"quality_wines\")) {\r\n                query = \"SELECT \" +\r\n                        \"`wine number` AS wineNumber, \" +\r\n                        \"`date` AS date, \" +\r\n                        \"NULL AS color, \" +               // Not available in quality_wines\r\n                        \"`quality` AS quality, \" +\r\n                        \"`alcohol` AS alcohol, \" +\r\n                        \"0 AS pH, \" +\r\n                        \"0 AS fixedAcidity, \" +\r\n                        \"0 AS volatileAcidity, \" +\r\n                        \"0 AS citricAcid, \" +\r\n                        \"0 AS residualSugar, \" +\r\n                        \"0 AS chlorides, \" +\r\n                        \"0 AS freeSulfurDioxide, \" +\r\n                        \"0 AS totalSulfurDioxide, \" +\r\n                        \"0 AS density, \" +\r\n                        \"0 AS sulphates \" +\r\n                        \"FROM \" + tableName;\r\n            } else if (tableName.equals(\"strong_red_wines\")) {\r\n                query = \"SELECT \" +\r\n                        \"`wine number` AS wineNumber, \" +\r\n                        \"`date` AS date, \" +\r\n                        \"`color` AS color, \" +\r\n                        \"NULL AS quality, \" +              // Not available in strong_red_wines\r\n                        \"`alcohol` AS alcohol, \" +\r\n                        \"0 AS pH, \" +\r\n                        \"0 AS fixedAcidity, \" +\r\n                        \"0 AS volatileAcidity, \" +\r\n                        \"0 AS citricAcid, \" +\r\n                        \"0 AS residualSugar, \" +\r\n                        \"0 AS chlorides, \" +\r\n                        \"0 AS freeSulfurDioxide, \" +\r\n                        \"0 AS totalSulfurDioxide, \" +\r\n                        \"0 AS density, \" +\r\n                        \"0 AS sulphates \" +\r\n                        \"FROM \" + tableName;\r\n            } else {\r\n                // For any other table, do a regular query.\r\n                query = \"SELECT * FROM \" + tableName;\r\n            }\r\n\r\n            ResultSet resultSet = statement.executeQuery(query);\r\n\r\n            while (resultSet.next()) {\r\n                Wine wine = new Wine(\r\n                        resultSet.getInt(\"wineNumber\"),\r\n                        resultSet.getDate(\"date\"),\r\n                        resultSet.getString(\"color\"),\r\n                        resultSet.getString(\"quality\"),\r\n                        resultSet.getFloat(\"alcohol\"),\r\n                        resultSet.getFloat(\"pH\"),\r\n                        resultSet.getFloat(\"fixedAcidity\"),\r\n                        resultSet.getFloat(\"volatileAcidity\"),\r\n                        resultSet.getFloat(\"citricAcid\"),\r\n                        resultSet.getFloat(\"residualSugar\"),\r\n                        resultSet.getFloat(\"chlorides\"),\r\n                        resultSet.getInt(\"freeSulfurDioxide\"),\r\n                        resultSet.getInt(\"totalSulfurDioxide\"),\r\n                        resultSet.getFloat(\"density\"),\r\n                        resultSet.getFloat(\"sulphates\")\r\n                );\r\n                wineList.add(wine);\r\n            }\r\n            setWines(wineList);\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    @FXML\r\n    private void initialize() {\r\n        wineNumberColumn.setCellValueFactory(new PropertyValueFactory<>(\"wineNumber\"));\r\n        dateColumn.setCellValueFactory(new PropertyValueFactory<>(\"date\"));\r\n        colorColumn.setCellValueFactory(new PropertyValueFactory<>(\"color\"));\r\n        qualityColumn.setCellValueFactory(new PropertyValueFactory<>(\"quality\"));\r\n        alcoholColumn.setCellValueFactory(new PropertyValueFactory<>(\"alcohol\"));\r\n        pHColumn.setCellValueFactory(new PropertyValueFactory<>(\"pH\"));\r\n        fixedAcidityColumn.setCellValueFactory(new PropertyValueFactory<>(\"fixedAcidity\"));\r\n        volatileAcidityColumn.setCellValueFactory(new PropertyValueFactory<>(\"volatileAcidity\"));\r\n        citricAcidColumn.setCellValueFactory(new PropertyValueFactory<>(\"citricAcid\"));\r\n        residualSugarColumn.setCellValueFactory(new PropertyValueFactory<>(\"residualSugar\"));\r\n        chloridesColumn.setCellValueFactory(new PropertyValueFactory<>(\"chlorides\"));\r\n        freeSulfurDioxideColumn.setCellValueFactory(new PropertyValueFactory<>(\"freeSulfurDioxide\"));\r\n        totalSulfurDioxideColumn.setCellValueFactory(new PropertyValueFactory<>(\"totalSulfurDioxide\"));\r\n        densityColumn.setCellValueFactory(new PropertyValueFactory<>(\"density\"));\r\n        sulphatesColumn.setCellValueFactory(new PropertyValueFactory<>(\"sulphates\"));\r\n\r\n        // Do not call loadData() here because connection/tableName might not be set yet.\r\n        // loadData();\r\n\r\n        backButton.setOnAction(event -> {\r\n            Stage currentStage = (Stage) backButton.getScene().getWindow();\r\n            currentStage.close();\r\n        });\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/WineTableController.java b/src/WineTableController.java
+--- a/src/WineTableController.java	(revision 08081ae4d538553620631af69f8c954aae7dd1cc)
++++ b/src/WineTableController.java	(date 1741944198168)
+@@ -1,12 +1,15 @@
+ import javafx.collections.FXCollections;
+ import javafx.collections.ObservableList;
+ import javafx.fxml.FXML;
++import javafx.fxml.FXMLLoader;
++import javafx.scene.Scene;
+ import javafx.scene.control.Button;
+ import javafx.scene.control.TableColumn;
+ import javafx.scene.control.TableView;
+ import javafx.scene.control.cell.PropertyValueFactory;
+ import javafx.stage.Stage;
+ 
++import java.io.IOException;
+ import java.sql.Connection;
+ import java.sql.ResultSet;
+ import java.sql.Statement;
+@@ -91,37 +94,37 @@
+                 query = "SELECT " +
+                         "`wine number` AS wineNumber, " +
+                         "`date` AS date, " +
+-                        "NULL AS color, " +               // Not available in quality_wines
++                        "color, " +               // Include color if available
+                         "`quality` AS quality, " +
+                         "`alcohol` AS alcohol, " +
+-                        "0 AS pH, " +
+-                        "0 AS fixedAcidity, " +
+-                        "0 AS volatileAcidity, " +
+-                        "0 AS citricAcid, " +
+-                        "0 AS residualSugar, " +
+-                        "0 AS chlorides, " +
+-                        "0 AS freeSulfurDioxide, " +
+-                        "0 AS totalSulfurDioxide, " +
+-                        "0 AS density, " +
+-                        "0 AS sulphates " +
++                        "pH, " +
++                        "`fixed acidity` AS fixedAcidity, " +
++                        "`volatile acidity` AS volatileAcidity, " +
++                        "`citric acid` AS citricAcid, " +
++                        "`residual sugar` AS residualSugar, " +
++                        "chlorides, " +
++                        "`free sulfur dioxide` AS freeSulfurDioxide, " +
++                        "`total sulfur dioxide` AS totalSulfurDioxide, " +
++                        "density, " +
++                        "sulphates " +
+                         "FROM " + tableName;
+             } else if (tableName.equals("strong_red_wines")) {
+                 query = "SELECT " +
+                         "`wine number` AS wineNumber, " +
+                         "`date` AS date, " +
+                         "`color` AS color, " +
+-                        "NULL AS quality, " +              // Not available in strong_red_wines
++                        "quality, " +              // Include quality if available
+                         "`alcohol` AS alcohol, " +
+-                        "0 AS pH, " +
+-                        "0 AS fixedAcidity, " +
+-                        "0 AS volatileAcidity, " +
+-                        "0 AS citricAcid, " +
+-                        "0 AS residualSugar, " +
+-                        "0 AS chlorides, " +
+-                        "0 AS freeSulfurDioxide, " +
+-                        "0 AS totalSulfurDioxide, " +
+-                        "0 AS density, " +
+-                        "0 AS sulphates " +
++                        "pH, " +
++                        "`fixed acidity` AS fixedAcidity, " +
++                        "`volatile acidity` AS volatileAcidity, " +
++                        "`citric acid` AS citricAcid, " +
++                        "`residual sugar` AS residualSugar, " +
++                        "chlorides, " +
++                        "`free sulfur dioxide` AS freeSulfurDioxide, " +
++                        "`total sulfur dioxide` AS totalSulfurDioxide, " +
++                        "density, " +
++                        "sulphates " +
+                         "FROM " + tableName;
+             } else {
+                 // For any other table, do a regular query.
+@@ -178,8 +181,10 @@
+         // loadData();
+ 
+         backButton.setOnAction(event -> {
+-            Stage currentStage = (Stage) backButton.getScene().getWindow();
+-            currentStage.close();
++            if (stage != null) {
++                stage.close();
++                stage = null;  // Clear the reference
++            }
+         });
+     }
+ }
+Index: .idea/libraries/javafx_swt.xml
+===================================================================
+diff --git a/.idea/libraries/javafx_swt.xml b/.idea/libraries/javafx_swt.xml
+deleted file mode 100644
+--- a/.idea/libraries/javafx_swt.xml	(revision 08081ae4d538553620631af69f8c954aae7dd1cc)
++++ /dev/null	(revision 08081ae4d538553620631af69f8c954aae7dd1cc)
+@@ -1,16 +0,0 @@
+-<component name="libraryTable">
+-  <library name="javafx-swt">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../../Desktop/SDKJAVAFX/javafx-sdk-23.0.1/lib/javafx-swt.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../Desktop/SDKJAVAFX/javafx-sdk-23.0.1/lib/javafx.base.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../Desktop/SDKJAVAFX/javafx-sdk-23.0.1/lib/javafx.controls.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../Desktop/SDKJAVAFX/javafx-sdk-23.0.1/lib/javafx.fxml.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../Desktop/SDKJAVAFX/javafx-sdk-23.0.1/lib/javafx.graphics.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../Desktop/SDKJAVAFX/javafx-sdk-23.0.1/lib/javafx.media.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../Desktop/SDKJAVAFX/javafx-sdk-23.0.1/lib/javafx.swing.jar!/" />
+-      <root url="jar://$PROJECT_DIR$/../../../Desktop/SDKJAVAFX/javafx-sdk-23.0.1/lib/javafx.web.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/.gitignore
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+deleted file mode 100644
+--- a/.idea/.gitignore	(revision 08081ae4d538553620631af69f8c954aae7dd1cc)
++++ /dev/null	(revision 08081ae4d538553620631af69f8c954aae7dd1cc)
+@@ -1,3 +0,0 @@
+-# Default ignored files
+-/shelf/
+-/workspace.xml
+Index: .idea/uiDesigner.xml
+===================================================================
+diff --git a/.idea/uiDesigner.xml b/.idea/uiDesigner.xml
+deleted file mode 100644
+--- a/.idea/uiDesigner.xml	(revision 08081ae4d538553620631af69f8c954aae7dd1cc)
++++ /dev/null	(revision 08081ae4d538553620631af69f8c954aae7dd1cc)
+@@ -1,124 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="Palette2">
+-    <group name="Swing">
+-      <item class="com.intellij.uiDesigner.HSpacer" tooltip-text="Horizontal Spacer" icon="/com/intellij/uiDesigner/icons/hspacer.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="1" hsize-policy="6" anchor="0" fill="1" />
+-      </item>
+-      <item class="com.intellij.uiDesigner.VSpacer" tooltip-text="Vertical Spacer" icon="/com/intellij/uiDesigner/icons/vspacer.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="1" anchor="0" fill="2" />
+-      </item>
+-      <item class="javax.swing.JPanel" icon="/com/intellij/uiDesigner/icons/panel.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3" />
+-      </item>
+-      <item class="javax.swing.JScrollPane" icon="/com/intellij/uiDesigner/icons/scrollPane.svg" removable="false" auto-create-binding="false" can-attach-label="true">
+-        <default-constraints vsize-policy="7" hsize-policy="7" anchor="0" fill="3" />
+-      </item>
+-      <item class="javax.swing.JButton" icon="/com/intellij/uiDesigner/icons/button.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="3" anchor="0" fill="1" />
+-        <initial-values>
+-          <property name="text" value="Button" />
+-        </initial-values>
+-      </item>
+-      <item class="javax.swing.JRadioButton" icon="/com/intellij/uiDesigner/icons/radioButton.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
+-        <initial-values>
+-          <property name="text" value="RadioButton" />
+-        </initial-values>
+-      </item>
+-      <item class="javax.swing.JCheckBox" icon="/com/intellij/uiDesigner/icons/checkBox.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
+-        <initial-values>
+-          <property name="text" value="CheckBox" />
+-        </initial-values>
+-      </item>
+-      <item class="javax.swing.JTextField" icon="/com/intellij/uiDesigner/icons/textField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
+-          <preferred-size width="150" height="-1" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JLabel" icon="/com/intellij/uiDesigner/icons/label.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="0" anchor="8" fill="0" />
+-        <initial-values>
+-          <property name="text" value="Label" />
+-        </initial-values>
+-      </item>
+-      <item class="javax.swing.JPasswordField" icon="/com/intellij/uiDesigner/icons/passwordField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
+-          <preferred-size width="150" height="-1" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JFormattedTextField" icon="/com/intellij/uiDesigner/icons/formattedTextField.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
+-          <preferred-size width="150" height="-1" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JTextArea" icon="/com/intellij/uiDesigner/icons/textArea.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JTextPane" icon="/com/intellij/uiDesigner/icons/textPane.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JEditorPane" icon="/com/intellij/uiDesigner/icons/editorPane.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JComboBox" icon="/com/intellij/uiDesigner/icons/comboBox.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="2" anchor="8" fill="1" />
+-      </item>
+-      <item class="javax.swing.JTable" icon="/com/intellij/uiDesigner/icons/table.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JList" icon="/com/intellij/uiDesigner/icons/list.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="2" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JTree" icon="/com/intellij/uiDesigner/icons/tree.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
+-          <preferred-size width="150" height="50" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JTabbedPane" icon="/com/intellij/uiDesigner/icons/tabbedPane.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
+-          <preferred-size width="200" height="200" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JSplitPane" icon="/com/intellij/uiDesigner/icons/splitPane.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
+-          <preferred-size width="200" height="200" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JSpinner" icon="/com/intellij/uiDesigner/icons/spinner.svg" removable="false" auto-create-binding="true" can-attach-label="true">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
+-      </item>
+-      <item class="javax.swing.JSlider" icon="/com/intellij/uiDesigner/icons/slider.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
+-      </item>
+-      <item class="javax.swing.JSeparator" icon="/com/intellij/uiDesigner/icons/separator.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3" />
+-      </item>
+-      <item class="javax.swing.JProgressBar" icon="/com/intellij/uiDesigner/icons/progressbar.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1" />
+-      </item>
+-      <item class="javax.swing.JToolBar" icon="/com/intellij/uiDesigner/icons/toolbar.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1">
+-          <preferred-size width="-1" height="20" />
+-        </default-constraints>
+-      </item>
+-      <item class="javax.swing.JToolBar$Separator" icon="/com/intellij/uiDesigner/icons/toolbarSeparator.svg" removable="false" auto-create-binding="false" can-attach-label="false">
+-        <default-constraints vsize-policy="0" hsize-policy="0" anchor="0" fill="1" />
+-      </item>
+-      <item class="javax.swing.JScrollBar" icon="/com/intellij/uiDesigner/icons/scrollbar.svg" removable="false" auto-create-binding="true" can-attach-label="false">
+-        <default-constraints vsize-policy="6" hsize-policy="0" anchor="0" fill="2" />
+-      </item>
+-    </group>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: wine_Project.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<module type=\"JAVA_MODULE\" version=\"4\">\r\n  <component name=\"NewModuleRootManager\" inherit-compiler-output=\"true\">\r\n    <exclude-output />\r\n    <content url=\"file://$MODULE_DIR$\">\r\n      <sourceFolder url=\"file://$MODULE_DIR$/src\" isTestSource=\"false\" />\r\n      <sourceFolder url=\"file://$MODULE_DIR$/src/resource\" type=\"java-resource\" />\r\n    </content>\r\n    <orderEntry type=\"jdk\" jdkName=\"openjdk-23\" jdkType=\"JavaSDK\" />\r\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\r\n    <orderEntry type=\"module-library\">\r\n      <library>\r\n        <CLASSES>\r\n          <root url=\"jar://$MODULE_DIR$/lib/mysql-connector-j-9.1.0.jar!/\" />\r\n        </CLASSES>\r\n        <JAVADOC />\r\n        <SOURCES />\r\n      </library>\r\n    </orderEntry>\r\n    <orderEntry type=\"module-library\" exported=\"\">\r\n      <library>\r\n        <CLASSES>\r\n          <root url=\"jar://$USER_HOME$/Downloads/openjfx-23.0.1_windows-x64_bin-sdk.zip!/\" />\r\n        </CLASSES>\r\n        <JAVADOC />\r\n        <SOURCES />\r\n      </library>\r\n    </orderEntry>\r\n    <orderEntry type=\"module-library\">\r\n      <library>\r\n        <CLASSES>\r\n          <root url=\"jar://$MODULE_DIR$/../../../Desktop/openjfx-23.0.1_windows-x64_bin-sdk.zip!/\" />\r\n        </CLASSES>\r\n        <JAVADOC />\r\n        <SOURCES />\r\n      </library>\r\n    </orderEntry>\r\n    <orderEntry type=\"library\" name=\"javafx-swt\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"lib\" level=\"project\" />\r\n  </component>\r\n</module>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/wine_Project.iml b/wine_Project.iml
+--- a/wine_Project.iml	(revision 08081ae4d538553620631af69f8c954aae7dd1cc)
++++ b/wine_Project.iml	(date 1741945204123)
+@@ -4,10 +4,10 @@
+     <exclude-output />
+     <content url="file://$MODULE_DIR$">
+       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+-      <sourceFolder url="file://$MODULE_DIR$/src/resource" type="java-resource" />
+     </content>
+-    <orderEntry type="jdk" jdkName="openjdk-23" jdkType="JavaSDK" />
++    <orderEntry type="inheritedJdk" />
+     <orderEntry type="sourceFolder" forTests="false" />
++    <orderEntry type="library" name="lib" level="project" />
+     <orderEntry type="module-library">
+       <library>
+         <CLASSES>
+@@ -17,25 +17,5 @@
+         <SOURCES />
+       </library>
+     </orderEntry>
+-    <orderEntry type="module-library" exported="">
+-      <library>
+-        <CLASSES>
+-          <root url="jar://$USER_HOME$/Downloads/openjfx-23.0.1_windows-x64_bin-sdk.zip!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="module-library">
+-      <library>
+-        <CLASSES>
+-          <root url="jar://$MODULE_DIR$/../../../Desktop/openjfx-23.0.1_windows-x64_bin-sdk.zip!/" />
+-        </CLASSES>
+-        <JAVADOC />
+-        <SOURCES />
+-      </library>
+-    </orderEntry>
+-    <orderEntry type="library" name="javafx-swt" level="project" />
+-    <orderEntry type="library" name="lib" level="project" />
+   </component>
+ </module>
+\ No newline at end of file
+Index: .idea/libraries/mysql_connector_j_9_1_0.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/mysql_connector_j_9_1_0.xml b/.idea/libraries/mysql_connector_j_9_1_0.xml
+new file mode 100644
+--- /dev/null	(date 1741944374451)
++++ b/.idea/libraries/mysql_connector_j_9_1_0.xml	(date 1741944374451)
+@@ -0,0 +1,9 @@
++<component name="libraryTable">
++  <library name="mysql-connector-j-9.1.0">
++    <CLASSES>
++      <root url="jar://$PROJECT_DIR$/lib/mysql-connector-j-9.1.0.jar!/" />
++    </CLASSES>
++    <JAVADOC />
++    <SOURCES />
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/lib.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/lib.xml b/.idea/libraries/lib.xml
+new file mode 100644
+--- /dev/null	(date 1741944601365)
++++ b/.idea/libraries/lib.xml	(date 1741944601365)
+@@ -0,0 +1,10 @@
++<component name="libraryTable">
++  <library name="lib">
++    <CLASSES>
++      <root url="file://$USER_HOME$/Downloads/openjfx-23.0.1_windows-x64_bin-sdk/javafx-sdk-23.0.1/lib" />
++    </CLASSES>
++    <JAVADOC />
++    <SOURCES />
++    <jarDirectory url="file://$USER_HOME$/Downloads/openjfx-23.0.1_windows-x64_bin-sdk/javafx-sdk-23.0.1/lib" recursive="false" />
++  </library>
++</component>
+\ No newline at end of file

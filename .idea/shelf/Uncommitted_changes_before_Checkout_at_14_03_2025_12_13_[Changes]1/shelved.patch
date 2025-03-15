@@ -1,0 +1,38 @@
+Index: wine_Project.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<module type=\"JAVA_MODULE\" version=\"4\">\r\n  <component name=\"NewModuleRootManager\" inherit-compiler-output=\"true\">\r\n    <exclude-output />\r\n    <content url=\"file://$MODULE_DIR$\">\r\n      <sourceFolder url=\"file://$MODULE_DIR$/src\" isTestSource=\"false\" />\r\n      <sourceFolder url=\"file://$MODULE_DIR$/src/resource\" type=\"java-resource\" />\r\n    </content>\r\n    <orderEntry type=\"jdk\" jdkName=\"openjdk-23\" jdkType=\"JavaSDK\" />\r\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\r\n    <orderEntry type=\"module-library\">\r\n      <library>\r\n        <CLASSES>\r\n          <root url=\"jar://$MODULE_DIR$/lib/mysql-connector-j-9.1.0.jar!/\" />\r\n        </CLASSES>\r\n        <JAVADOC />\r\n        <SOURCES />\r\n      </library>\r\n    </orderEntry>\r\n    <orderEntry type=\"module-library\" exported=\"\">\r\n      <library>\r\n        <CLASSES>\r\n          <root url=\"jar://$USER_HOME$/Downloads/openjfx-23.0.1_windows-x64_bin-sdk.zip!/\" />\r\n        </CLASSES>\r\n        <JAVADOC />\r\n        <SOURCES />\r\n      </library>\r\n    </orderEntry>\r\n    <orderEntry type=\"module-library\">\r\n      <library>\r\n        <CLASSES>\r\n          <root url=\"jar://$MODULE_DIR$/../../../Desktop/openjfx-23.0.1_windows-x64_bin-sdk.zip!/\" />\r\n        </CLASSES>\r\n        <JAVADOC />\r\n        <SOURCES />\r\n      </library>\r\n    </orderEntry>\r\n    <orderEntry type=\"library\" name=\"lib\" level=\"project\" />\r\n  </component>\r\n</module>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/wine_Project.iml b/wine_Project.iml
+--- a/wine_Project.iml	(revision 8590a69832e6df67bdf00dbc1b212d201d09503c)
++++ b/wine_Project.iml	(date 1741945806547)
+@@ -35,6 +35,7 @@
+         <SOURCES />
+       </library>
+     </orderEntry>
++    <orderEntry type="library" name="javafx-swt" level="project" />
+     <orderEntry type="library" name="lib" level="project" />
+   </component>
+ </module>
+\ No newline at end of file
+Index: src/WineJDBC.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import javafx.application.Application;\r\nimport javafx.fxml.FXMLLoader;\r\nimport javafx.scene.Parent;\r\nimport javafx.scene.Scene;\r\nimport javafx.stage.Stage;\r\nimport java.sql.Connection;\r\nimport java.sql.DriverManager;\r\nimport java.sql.SQLException;\r\n\r\npublic class WineJDBC extends Application {\r\n\r\n    private static Connection connection;\r\n\r\n    public static Connection getConnection() {\r\n        return connection;\r\n    }\r\n\r\n    @Override\r\n    public void start(Stage primaryStage) throws Exception {\r\n        // Load the FXML file\r\n        FXMLLoader loader = new FXMLLoader(getClass().getResource(\"/WineMenu.fxml\"));\r\n        Parent root = loader.load();\r\n\r\n        // Initialize QueryBuilder and QueryExecutor\r\n        QueryBuilder queryBuilder = new QueryBuilder();\r\n        QueryExecutor queryExecutor = new QueryExecutor(connection);\r\n\r\n        // Get the controller and pass dependencies\r\n        WineMenuController controller = loader.getController();\r\n        controller.setConnection(connection);\r\n        controller.setQueryExecutor(queryExecutor);\r\n        controller.setQueryBuilder(queryBuilder);\r\n\r\n        // Setup and show the stage\r\n        primaryStage.setTitle(\"Wine Database\");\r\n        primaryStage.setScene(new Scene(root));\r\n        primaryStage.show();\r\n    }\r\n\r\n    public static void main(String[] args) {\r\n        // Establish the SQL connection\r\n        try {\r\n            connection = DriverManager.getConnection(\r\n                    \"jdbc:mysql://127.0.0.1:3306/wine_project\",\r\n                    \"root\",\r\n                    \"Sod123456\"\r\n            );\r\n            System.out.println(\"Connected to the database successfully.\");\r\n        } catch (SQLException e) {\r\n            System.out.println(\"SQL Error: \" + e.getMessage());\r\n            e.printStackTrace();\r\n            return;\r\n        }\r\n\r\n        // Launch the JavaFX application\r\n        launch(args);\r\n\r\n        // Close the connection on exit\r\n        try {\r\n            if (connection != null && !connection.isClosed()) {\r\n                connection.close();\r\n                System.out.println(\"Database connection closed.\");\r\n            }\r\n        } catch (SQLException e) {\r\n            e.printStackTrace();\r\n        }\r\n\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/WineJDBC.java b/src/WineJDBC.java
+--- a/src/WineJDBC.java	(revision 8590a69832e6df67bdf00dbc1b212d201d09503c)
++++ b/src/WineJDBC.java	(date 1741945800001)
+@@ -18,7 +18,7 @@
+     @Override
+     public void start(Stage primaryStage) throws Exception {
+         // Load the FXML file
+-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/WineMenu.fxml"));
++        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resource/WineMenu.fxml"));
+         Parent root = loader.load();
+ 
+         // Initialize QueryBuilder and QueryExecutor
